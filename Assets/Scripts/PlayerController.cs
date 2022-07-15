@@ -27,7 +27,13 @@ public class PlayerController : MonoBehaviour
     // Performs the current beat action
     public void PerformBeatAction() {
         if (beatAction != null) beatAction();
+        else StandardAction();
         beatAction = null;
+    }
+
+    // Action performed when no other action is selected
+    private void StandardAction() {
+        rigidBody.AddForce(Vector2.up * jumpForce / 3, ForceMode2D.Impulse);
     }
     
     public void Jump(InputAction.CallbackContext callbackContext)

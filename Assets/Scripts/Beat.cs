@@ -6,13 +6,21 @@ using UnityEngine.Events;
 
 public class Beat : MonoBehaviour
 {
+    // === INTERFACE
+    
     public float beatsPerSecond = 0.5f;
 
     public UnityEvent beatTrigger;
+
+    // === REFS
+
+    AudioSource audioSource;
     
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
         StartCoroutine(BeatTimer());
     }
 
@@ -23,6 +31,9 @@ public class Beat : MonoBehaviour
         
         while (true) {
             float beatStart = DateTime.Now.Second;
+            
+            // Play kick
+            audioSource.Play();
             
             // Debug.Log("BeatTimer");
             beatTrigger.Invoke();
