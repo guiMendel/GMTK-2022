@@ -26,6 +26,8 @@ public class Beat : MonoBehaviour
     {
         kickSource = kickObject.GetComponent<AudioSource>();
         hatSource = hatObject.GetComponent<AudioSource>();
+        beatTrigger ??= new UnityEvent();
+        counterbeatTrigger ??= new UnityEvent();
 
         StartCoroutine(BeatTimer());
     }

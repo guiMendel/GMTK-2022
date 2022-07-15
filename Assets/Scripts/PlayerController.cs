@@ -86,4 +86,23 @@ public class PlayerController : MonoBehaviour
     public void StopMovement() {
         rigidBody.velocity = Vector2.zero;
     }
+
+    public void Die() {
+        StartCoroutine(DieCoroutine());
+    }
+
+    IEnumerator DieCoroutine(float resetDelay = 1.5f) {
+        // Hide & disable physics
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+
+        spriteRenderer.enabled = false;
+        rigidBody.isKinematic = true;
+        
+        // Wait time
+        yield return new WaitForSeconds(resetDelay);
+        
+        StageController stageController = FindObjectOfType<StageController>();
+
+        stageController.ResetStage();
+    }
 }
