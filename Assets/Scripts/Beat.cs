@@ -8,40 +8,54 @@ public class Beat : MonoBehaviour
 {
     // === INTERFACE
     
-    public float beatsPerSecond = 0.5f;
+    public float secondsPerBeat = 1f;
 
     public UnityEvent beatTrigger;
+    public UnityEvent counterBeatTrigger;
+
+    public GameObject kickObject;
+    public GameObject hatObject;
 
     // === REFS
 
-    AudioSource audioSource;
-    
+    AudioSource kickSource;
+    AudioSource hatSource;
+
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        kickSource = kickObject.GetComponent<AudioSource>();
+        hatSource = hatObject.GetComponent<AudioSource>();
 
         StartCoroutine(BeatTimer());
     }
 
     // Coroutine that triggers the beat method in it's beat time
     private IEnumerator BeatTimer() {
-        // Get how many seconds should pass between beats
-        float secondsPerBeat = 1 / beatsPerSecond;
+        // Whether is triggering beat or counterbeat
+        bool isCounter = false;
+
+        // Calculate loop time (is half beat so that we can raise counterbeat events)
+        float loopTime = secondsPerBeat / 2.0f;
         
         while (true) {
             float beatStart = DateTime.Now.Second;
             
-            // Play kick
-            audioSource.Play();
+            // Play sfx
+            if (isCounter) hatSource.Play();
+            else kickSource.Play();
             
-            // Debug.Log("BeatTimer");
-            beatTrigger.Invoke();
+            // Raise corresponding event
+            if (isCounter) counterBeatTrigger.Invoke();
+            else beatTrigger.Invoke();
 
-            // How much time has already passed in this beat
+            // Switch mode
+            isCounter = !isCounter;
+
+            // How much time has already passed in this cycle
             float elapsedTime = DateTime.Now.Second - beatStart;
 
-            yield return new WaitForSeconds(secondsPerBeat - elapsedTime);
+            yield return new WaitForSeconds(loopTime - elapsedTime);
         }
     }
 }
