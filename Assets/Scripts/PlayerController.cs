@@ -26,12 +26,12 @@ public class PlayerController : MonoBehaviour
     
     Rigidbody2D rigidBody;
     Grid grid;
+    RhythmicExecuter rhythmicExecuter;
 
     public void Start() {
-        rigidBody = GetComponent<Rigidbody2D>();
         grid = FindObjectOfType<Grid>();
-
-        SnapToGrid();
+        rigidBody = GetComponent<Rigidbody2D>();
+        rhythmicExecuter = GetComponent<RhythmicExecuter>();
 
         // Calculate move speed
         Beat beat = FindObjectOfType<Beat>();
@@ -39,24 +39,13 @@ public class PlayerController : MonoBehaviour
         float moveDistance = grid.cellSize.x;
         float moveTime = beat.secondsPerBeat / 2.0f;
         moveSpeed = moveDistance / moveTime;
-    }
 
-    // Performs the current beat action
-    public void PerformBeatAction() {
-        // First, snap
-        SnapToGrid();
-        
-        // Then, act
+        // Set default beat action to small skip
+        rhythmicExecuter.defaultBeatAction = StandardAction;
 
-        // Check if need to move
-        if (beatMoveDirection != 0) PerformMovement();
 
-        // Jump
-        if (beatJump) rigidBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        else StandardAction();
-
-        // Reset
-        Reset();
+        // Set default counterbeat action to stop movement
+        rhythmicExecuter.defaultCounterbeatAction = StopMovement;
     }
 
     // Action performed when no other action is selected
@@ -68,7 +57,10 @@ public class PlayerController : MonoBehaviour
     {
         if (callbackContext.performed && callbackContext.ReadValueAsButton()) {
             // Add jump action
-            beatJump = true;
+            rhythmicExecuter.AddBeatAction(
+                "jump",
+                () => rigidBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse)
+            );
         }
     }
 
@@ -77,35 +69,21 @@ public class PlayerController : MonoBehaviour
         int inputDirection = (int)callbackContext.ReadValue<float>();
 
         // Ignore 0s
-        beatMoveDirection = inputDirection == 0 ? beatMoveDirection : inputDirection;
+        if (inputDirection == 0) return;
+
+        rhythmicExecuter.AddBeatAction(
+            "move",
+            () => rigidBody.velocity = new Vector2(inputDirection * moveSpeed, rigidBody.velocity.y)
+        );
     }
 
     public void Cancel(InputAction.CallbackContext callbackContext)
     {
-        Reset();
-    }
-
-    void Reset()
-    {
-        beatMoveDirection = 0;
-        beatJump = false;
+        rhythmicExecuter.ClearAll();
     }
 
     // Stops movement
     public void StopMovement() {
         rigidBody.velocity = Vector2.zero;
     }
-
-    void PerformMovement() {
-        // Start moving in the correct direction
-        rigidBody.velocity = Vector2.right * beatMoveDirection * moveSpeed;
-    }
-
-    // Snaps to grid position
-    void SnapToGrid() {
-        transform.position = grid.GetCellCenterWorld(grid.WorldToCell(transform.position));
-    }
-
-
-
 }

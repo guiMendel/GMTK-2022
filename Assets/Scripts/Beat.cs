@@ -11,7 +11,7 @@ public class Beat : MonoBehaviour
     public float secondsPerBeat = 1f;
 
     public UnityEvent beatTrigger;
-    public UnityEvent counterBeatTrigger;
+    public UnityEvent counterbeatTrigger;
 
     public GameObject kickObject;
     public GameObject hatObject;
@@ -46,7 +46,7 @@ public class Beat : MonoBehaviour
             else kickSource.Play();
             
             // Raise corresponding event
-            if (isCounter) counterBeatTrigger.Invoke();
+            if (isCounter) counterbeatTrigger.Invoke();
             else beatTrigger.Invoke();
 
             // Switch mode
