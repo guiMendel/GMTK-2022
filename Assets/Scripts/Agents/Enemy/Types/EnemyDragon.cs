@@ -6,6 +6,8 @@ public class EnemyDragon : EnemyType
 {
     // === INTERFACE
 
+    public float fireboxDelay = 0.3f;
+
     public ParticleSystem fireBreath;
     public Collider2D fireBox;
 
@@ -21,13 +23,21 @@ public class EnemyDragon : EnemyType
         // Start breathing fire
         fireBreath.Play();
 
-        // Enable fire hitbox
-        fireBox.enabled = true;        
+        // Activate firebox in a while
+        StartCoroutine(DelayedFirebox());
 
         // Stop on counterbeat
         rhythmicExecuter.AddCounterbeatAction("ceaseFire", () => {
             fireBreath.Stop();
             fireBox.enabled = false;        
         });
+    }
+
+    IEnumerator DelayedFirebox() {
+        // Wait delay
+        yield return new WaitForSeconds(fireboxDelay);
+        
+        // Enable fire hitbox
+        fireBox.enabled = true;        
     }
 }
