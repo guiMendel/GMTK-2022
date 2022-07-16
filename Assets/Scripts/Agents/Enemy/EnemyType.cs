@@ -6,9 +6,8 @@ abstract public class EnemyType : MonoBehaviour
 {
     // === REFS
 
-    Beat beat;
     UniverseDieMap universeDieMap;
-    RhythmicExecuter rhythmicExecuter;
+    protected RhythmicExecuter rhythmicExecuter;
 
 
     // === PROPERTIES
@@ -24,19 +23,18 @@ abstract public class EnemyType : MonoBehaviour
 
     
     private void Start() {
-        beat = FindObjectOfType<Beat>();
         universeDieMap = FindObjectOfType<UniverseDieMap>();
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
 
-        EnsureNotNull.Objects(beat, universeDieMap, rhythmicExecuter);
+        EnsureNotNull.Objects(universeDieMap, rhythmicExecuter);
 
         // Every counterbeat, prepare for this beat's action
-        beat.counterbeatTrigger.AddListener(ActionPrepare);
+        rhythmicExecuter.OnEveryCounterbeat.AddListener(ActionPrepare);
     }
 
     private void OnDestroy() {
         // Clean up
-        beat.counterbeatTrigger.RemoveListener(ActionPrepare);
+        rhythmicExecuter?.OnEveryCounterbeat?.RemoveListener(ActionPrepare);
     }
 
     void ActionPrepare() {
@@ -44,7 +42,7 @@ abstract public class EnemyType : MonoBehaviour
         if (IsActive == false) return;
 
         // Play anticipation animation
-        // print(FindObjectOfType<TheDie>().Value + ": " + this.GetType().Name);
+        print(FindObjectOfType<TheDie>().Value + ": " + this.GetType().Name);
 
         // Set up a beat action
         rhythmicExecuter.AddBeatAction("enemyAction", BeatAction);

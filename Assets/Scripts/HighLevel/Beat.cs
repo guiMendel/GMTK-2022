@@ -21,16 +21,18 @@ public class Beat : MonoBehaviour
 
     AudioSource kickSource;
     AudioSource hatSource;
+    TheDie theDie;
 
     // Start is called before the first frame update
     void Start()
     {
+        theDie = FindObjectOfType<TheDie>();
         kickSource = kickObject.GetComponent<AudioSource>();
         hatSource = hatObject.GetComponent<AudioSource>();
         beatTrigger ??= new UnityEvent();
         counterbeatTrigger ??= new UnityEvent();
 
-        EnsureNotNull.Objects(kickSource, hatSource);
+        EnsureNotNull.Objects(kickSource, hatSource, theDie);
 
         StartCoroutine(BeatTimer());
     }
@@ -45,6 +47,9 @@ public class Beat : MonoBehaviour
         
         while (true) {
             float beatStart = DateTime.Now.Second;
+
+            // If counterbeat, first of all we let the die know
+            if (isCounter) theDie.CheckRollDie();
             
             // Play sfx
             if (isCounter) hatSource.Play();

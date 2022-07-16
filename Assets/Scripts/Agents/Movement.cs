@@ -41,7 +41,7 @@ public class Movement : MonoBehaviour
         moveTime = beat.secondsPerBeat / 2.0f;
 
         // Cancel horizontal movement on counterbeat
-        FindObjectOfType<RhythmicExecuter>().OnIdleCounterbeat.AddListener(StopMovement);
+        FindObjectOfType<RhythmicExecuter>().OnEveryCounterbeat.AddListener(StopMovement);
 
         // Init direction
         Direction = 1f;
@@ -49,7 +49,7 @@ public class Movement : MonoBehaviour
 
     private void OnDestroy() {
         // Clean up listener
-        FindObjectOfType<RhythmicExecuter>()?.OnIdleCounterbeat.RemoveListener(StopMovement);
+        FindObjectOfType<RhythmicExecuter>()?.OnEveryCounterbeat.RemoveListener(StopMovement);
 
     }
 

@@ -35,18 +35,15 @@ public class TheDie : MonoBehaviour
 
         EnsureNotNull.Objects(rhythmicExecuter); 
 
-        // Get die roll result every counterbeat
-        rhythmicExecuter.OnIdleCounterbeat.AddListener(CheckRollDie);
-
         // Initialize die value
         beatsUntilNextRoll = beatsPerRoll;
         
-        CheckRollDie();
+        CheckRollDie(dontCount: true);
     }
 
-    void CheckRollDie() {
+    public void CheckRollDie(bool dontCount = false) {
         // Count this beat to the beats left until next roll
-        if (--beatsUntilNextRoll > 0) return;
+        if (dontCount == false && --beatsUntilNextRoll > 0) return;
         
         // Get a random number between 1 and 6
         Value = Random.Range(1, totalFaces + 1);
