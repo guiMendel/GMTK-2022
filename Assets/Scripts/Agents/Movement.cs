@@ -81,7 +81,11 @@ public class Movement : MonoBehaviour
     }
 
     public UnityAction MakeMove(
-        float direction, int tiles = 1, float obstructedMovementDelay = 0.0f, UnityAction callback = null
+        float direction,
+        int tiles = 1,
+        float obstructedMovementDelay = 0.0f,
+        UnityAction callback = null,
+        bool hop = true
     )
     {
         Direction = Mathf.Sign(direction);
@@ -90,19 +94,19 @@ public class Movement : MonoBehaviour
         if (transform.localScale.x != Direction) FlipObject();
 
         return () => StartCoroutine(
-            DelayMoveIfObstructed(Direction, obstructedMovementDelay, tiles, callback)
+            DelayMoveIfObstructed(Direction, obstructedMovementDelay, tiles, callback, hop)
         );
     }
 
-    void Move(float moveSpeed) {
+    void Move(float moveSpeed, bool hop) {
         // Also hop
-        Hop();
+        if (hop) Hop();
         
         rigidBody.velocity = new Vector2(moveSpeed, rigidBody.velocity.y);
     }
 
     IEnumerator DelayMoveIfObstructed(
-        float direction, float delay, int tiles = 1, UnityAction callback = null
+        float direction, float delay, int tiles = 1, UnityAction callback = null, bool hop = true
     ) {
         // Safeguard
         if (delay >= moveTime) {
@@ -123,7 +127,7 @@ public class Movement : MonoBehaviour
         if (callback != null) callback();
 
         // Move
-        Move(moveSpeed);
+        Move(moveSpeed, hop);
     }
 
     void FlipObject() {

@@ -51,7 +51,15 @@ public class Wander : MonoBehaviour
         // Get waypoint direction
         float direction = Mathf.Sign(waypoint.position.x - transform.position.x);
 
+        movement.Direction = direction;
+
+        // If obstructed, jump
+        if (movement.IsObstructed()) {
+            movement.MakeJump()();
+            movement.MakeMove(direction, hop: false)();
+        }
+
         // Move towards it
-        movement.MakeMove(direction)();
+        else movement.MakeMove(direction)();
     }
 }
