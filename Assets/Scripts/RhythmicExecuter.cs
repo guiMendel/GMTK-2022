@@ -110,6 +110,12 @@ public class RhythmicExecuter : MonoBehaviour
             OnIdle.Invoke();
             return;
         }
+
+        // If has move action, perform it first
+        if (actions.ContainsKey("move")) {
+            actions["move"]();
+            actions.Remove("move");
+        }
         
         foreach(var listener in actions.Values) listener();
 

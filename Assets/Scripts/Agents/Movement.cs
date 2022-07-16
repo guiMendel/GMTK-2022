@@ -15,6 +15,10 @@ public class Movement : MonoBehaviour
 
     public float groundCheckDistance = 0.6f;
 
+    [Range(0f, 1f)] public float hopPowerFraction = 0.35f;
+
+    [Range(0f, 1f)] public float hopGravityReduction = 0.35f;
+
     // === STATE
 
     // Store 1 square movement distance
@@ -30,13 +34,15 @@ public class Movement : MonoBehaviour
     
     Rigidbody2D rigidBody;
     Grid grid;
+    RhythmicExecuter rhythmicExecuter;
 
 
     public void Start() {
         rigidBody = GetComponent<Rigidbody2D>();
         grid = FindObjectOfType<Grid>();
+        rhythmicExecuter = GetComponent<RhythmicExecuter>();
 
-        EnsureNotNull.Objects(rigidBody, grid);
+        EnsureNotNull.Objects(rigidBody, grid, rhythmicExecuter);
 
         // Calculate move speed
         Beat beat = FindObjectOfType<Beat>();
@@ -45,7 +51,10 @@ public class Movement : MonoBehaviour
         moveTime = beat.secondsPerBeat / 2.0f;
 
         // Cancel horizontal movement on counterbeat
-        FindObjectOfType<RhythmicExecuter>().OnEveryCounterbeat.AddListener(StopMovement);
+        rhythmicExecuter.OnEveryCounterbeat.AddListener(StopMovement);
+
+        // Hop when idle
+        rhythmicExecuter.OnIdleBeat.AddListener(Hop);
 
         // Init direction
         Direction = 1f;
@@ -86,8 +95,8 @@ public class Movement : MonoBehaviour
     }
 
     void Move(float moveSpeed) {
-        // Stop if not grounded
-        if (IsGrounded == false) return;
+        // Also hop
+        Hop();
         
         rigidBody.velocity = new Vector2(moveSpeed, rigidBody.velocity.y);
     }
@@ -100,15 +109,15 @@ public class Movement : MonoBehaviour
             throw new Exception("Movement delay may not exceed movement time");
         }
         
+        // Stop if not grounded
+        if (IsGrounded == false) yield break;
+
         // Calculate move speed
         float effectiveDelay = IsObstructed() ? delay : 0.0f;
         float moveSpeed = Direction * tiles * tileSize / (moveTime - effectiveDelay);
-        
+
         // Wait delay
         if (IsObstructed()) yield return new WaitForSeconds(delay);
-
-        // Stop if not grounded
-        if (IsGrounded == false) yield break;
 
         // Execute callback
         if (callback != null) callback();
@@ -139,6 +148,17 @@ public class Movement : MonoBehaviour
         rigidBody.velocity = new Vector2(0.0f, rigidBody.velocity.y);
     }
 
+    void Hop() {
+        // Stop if not grounded or has jump
+        if (
+            IsGrounded == false || rhythmicExecuter.GetBeatAction("jump") != null
+        ) return;
+        
+        ReduceGravity();
+
+        MakeJump(hopPowerFraction)();
+    }
+
     public bool IsGrounded {
         get {
             RaycastHit2D hit = Physics2D.Raycast(
@@ -147,5 +167,14 @@ public class Movement : MonoBehaviour
 
             return hit.collider != null;
         }
+    }
+
+    public void ReduceGravity() {
+        rigidBody.gravityScale = hopGravityReduction;
+
+        // Return to normal on counterbeat
+        rhythmicExecuter.AddCounterbeatAction(
+            "returnGravityScale", () => rigidBody.gravityScale = 1f
+        );
     }
 }
