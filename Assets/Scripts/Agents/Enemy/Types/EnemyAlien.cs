@@ -10,6 +10,7 @@ public class EnemyAlien : EnemyType
 
 
     protected override void BeatAction() {
-        // print("Pounce!");
+        // Pounce in the facing direction
+        movement.MakeMove(movement.Direction, 3)();
     }
 }

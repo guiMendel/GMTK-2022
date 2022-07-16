@@ -8,6 +8,7 @@ abstract public class EnemyType : MonoBehaviour
 
     UniverseDieMap universeDieMap;
     protected RhythmicExecuter rhythmicExecuter;
+    protected Movement movement;
 
 
     // === PROPERTIES
@@ -27,8 +28,9 @@ abstract public class EnemyType : MonoBehaviour
     private void Start() {
         universeDieMap = FindObjectOfType<UniverseDieMap>();
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
+        movement = GetComponent<Movement>();
 
-        EnsureNotNull.Objects(universeDieMap, rhythmicExecuter);
+        EnsureNotNull.Objects(universeDieMap, rhythmicExecuter, movement);
 
         // Every counterbeat, prepare for this beat's action
         rhythmicExecuter.OnEveryCounterbeat.AddListener(ActionPrepare);

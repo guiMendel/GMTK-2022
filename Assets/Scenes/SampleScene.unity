@@ -332,7 +332,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 282462225}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84a4ce44af0b44f4ea20554badc6846b, type: 3}
   m_Name: 
@@ -353,7 +353,7 @@ MonoBehaviour:
   jumpForce: 25
   groundLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   groundCheckDistance: 0.6
 --- !u!114 &282462234
 MonoBehaviour:
@@ -1315,7 +1315,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 531069340}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.43, y: 3.68, z: 0}
+  m_LocalPosition: {x: -1.54, y: 1.62, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1378,7 +1378,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0.2
+  m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: af28c3846a5fa4c43bc8ce03c1761ea9, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -3128,7 +3128,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1033315803}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.610438, y: 0.4243024, z: 0.123024315}
+  m_LocalPosition: {x: 3.61, y: 0.4243024, z: 0.123024315}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
