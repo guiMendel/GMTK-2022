@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
 
     public void Move(InputAction.CallbackContext callbackContext)
     {
-        int inputDirection = (int)callbackContext.ReadValue<float>();
+        float inputDirection = callbackContext.ReadValue<float>();
 
         // Ignore 0s
         if (inputDirection == 0) return;

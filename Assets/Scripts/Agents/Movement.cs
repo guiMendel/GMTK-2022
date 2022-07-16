@@ -47,7 +47,7 @@ public class Movement : MonoBehaviour
         return () => rigidBody.AddForce(Vector2.up * jumpForce * powerModifier, ForceMode2D.Impulse);
     }
 
-    public UnityAction MakeMove(int direction)
+    public UnityAction MakeMove(float direction)
     {
         return () => rigidBody.velocity = new Vector2(direction * moveSpeed, rigidBody.velocity.y);
     }
