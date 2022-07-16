@@ -41,8 +41,6 @@ public class Wander : MonoBehaviour
         Transform waypoint = WaypointsContainer.GetChild(waypointIndex);
 
         // Detect arrival
-        print((grid.WorldToCell(transform.position), grid.WorldToCell(waypoint.position)));
-        
         if (grid.WorldToCell(transform.position) == grid.WorldToCell(waypoint.position)) {
             // Advance waypoint
             waypointIndex = (waypointIndex + 1) % WaypointsContainer.childCount;
