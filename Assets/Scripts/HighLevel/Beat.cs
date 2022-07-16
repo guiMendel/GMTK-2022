@@ -29,6 +29,8 @@ public class Beat : MonoBehaviour
         beatTrigger ??= new UnityEvent();
         counterbeatTrigger ??= new UnityEvent();
 
+        EnsureNotNull.Objects(kickSource, hatSource);
+
         StartCoroutine(BeatTimer());
     }
 

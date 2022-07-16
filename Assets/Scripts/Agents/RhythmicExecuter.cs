@@ -7,8 +7,11 @@ public class RhythmicExecuter : MonoBehaviour
 {
     // === INTERFACE
 
-    public UnityAction defaultBeatAction = () => {};
-    public UnityAction defaultCounterbeatAction = () => {};
+    // Triggered when no beat action is available on beat
+    public UnityEvent OnIdleBeat;
+
+    // Triggered when no counterbeat action is available on counterbeat
+    public UnityEvent OnIdleCounterbeat;
     
     // === STATE
 
@@ -24,11 +27,16 @@ public class RhythmicExecuter : MonoBehaviour
     Beat beat;
 
     public void Start() {
+        OnIdleBeat ??= new UnityEvent();
+        OnIdleCounterbeat ??= new UnityEvent();
+        
         beatActions = new Dictionary<string, UnityAction>();
         counterbeatActions = new Dictionary<string, UnityAction>();
         
         grid = FindObjectOfType<Grid>();
         beat = FindObjectOfType<Beat>();
+
+        EnsureNotNull.Objects(grid, beat);
 
         // Keep bodies snapped
         SnapToGrid();
@@ -67,28 +75,24 @@ public class RhythmicExecuter : MonoBehaviour
     }
 
     void BeatListener() {
-        SnapToGrid();
-
-        if (beatActions.Count == 0) {
-            if (defaultBeatAction != null) defaultBeatAction();
-        } 
-        
-        else PerformActions(beatActions);
+        PerformActions(beatActions, OnIdleBeat);
     }
 
     void CounterbeatListener() {
-        SnapToGrid();
-
-
-        if (counterbeatActions.Count == 0) {
-            if (defaultCounterbeatAction != null) defaultCounterbeatAction();
-        } 
-        
-        else PerformActions(counterbeatActions);
+        PerformActions(counterbeatActions, OnIdleCounterbeat);
     }
 
     // Performs the current beat action
-    void PerformActions(Dictionary<string, UnityAction> actions) {
+    void PerformActions(Dictionary<string, UnityAction> actions, UnityEvent OnIdle) {
+        // Firstly, snap
+        SnapToGrid();
+        
+        // If no actions, invoke idle event
+        if (actions.Count == 0) {
+            OnIdle.Invoke();
+            return;
+        }
+        
         foreach(var listener in actions.Values) listener();
 
         // Clear list
