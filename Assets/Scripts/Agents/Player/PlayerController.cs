@@ -43,9 +43,9 @@ public class PlayerController : MonoBehaviour
         // If already had a move action, double it's speed
         if (rhythmicExecuter.GetBeatAction("move") == null) return;
 
-        // If obstructed, delay move
-        MoveDelayIfObstructed(movement.Direction, 2);
-
+        rhythmicExecuter.AddBeatAction(
+            "move", movement.MakeMove(movement.Direction, 2, jumpMoveDelay)
+        );
     }
 
     public void Move(InputAction.CallbackContext callbackContext)
@@ -58,20 +58,9 @@ public class PlayerController : MonoBehaviour
         // If has a jump action, move double the distance
         int tiles = rhythmicExecuter.GetBeatAction("jump") != null ? 2 : 1;
         
-        // If is obstructed, try delaying movement so that jump cna hop over single tile height walls
-        MoveDelayIfObstructed(inputDirection, tiles);
-    }
-
-    void MoveDelayIfObstructed(float direction, int tiles) {
-        if (movement.IsObstructed()) {
-            rhythmicExecuter.AddBeatAction(
-                "move", movement.MakeDelayedMove(direction, jumpMoveDelay, tiles)
-            );
-
-            return;
-        }
-
-        rhythmicExecuter.AddBeatAction("move", movement.MakeMove(direction, tiles));
+        rhythmicExecuter.AddBeatAction(
+            "move", movement.MakeMove(inputDirection, tiles, jumpMoveDelay)
+        );
     }
 
     public void Cancel(InputAction.CallbackContext callbackContext)

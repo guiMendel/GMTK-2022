@@ -67,38 +67,31 @@ public class Movement : MonoBehaviour
         return () => rigidBody.AddForce(Vector2.up * jumpForce * powerModifier, ForceMode2D.Impulse);
     }
 
-    public UnityAction MakeMove(float direction, int tiles = 1)
+    public UnityAction MakeMove(float direction, int tiles = 1, float obstructedMovementDelay = 0.0f)
     {
         Direction = Mathf.Sign(direction);
 
-        // Get speed
-        float moveSpeed = Direction * tiles * tileSize / moveTime;
-        
-        return () => Move(moveSpeed);
-    }
-
-    public UnityAction MakeDelayedMove(float direction, float delay, int tiles = 1)
-    {
-        Direction = Mathf.Sign(direction);
-
-        return () => StartCoroutine(DelayedMove(Direction, delay, tiles));
+        return () => StartCoroutine(
+            DelayMoveIfObstructed(Direction, obstructedMovementDelay, tiles)
+        );
     }
 
     void Move(float moveSpeed) {
         rigidBody.velocity = new Vector2(moveSpeed, rigidBody.velocity.y);
     }
 
-    IEnumerator DelayedMove(float direction, float delay, int tiles = 1) {
+    IEnumerator DelayMoveIfObstructed(float direction, float delay, int tiles = 1) {
         // Safeguard
         if (delay >= moveTime) {
             throw new Exception("Movement delay may not exceed movement time");
         }
         
         // Calculate move speed
-        float moveSpeed = Direction * tiles * tileSize / (moveTime - delay);
+        float effectiveDelay = IsObstructed() ? delay : 0.0f;
+        float moveSpeed = Direction * tiles * tileSize / (moveTime - effectiveDelay);
         
         // Wait delay
-        yield return new WaitForSeconds(delay);
+        if (IsObstructed()) yield return new WaitForSeconds(delay);
 
         // Move
         Move(moveSpeed);
