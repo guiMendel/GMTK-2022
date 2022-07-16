@@ -42,7 +42,7 @@ public class UniverseDieMap : MonoBehaviour
 
         for (int i = 0; i < theDie.totalFaces; i++) {
             typeMap[i + 1] = shuffledTypes[i];
-            print(shuffledTypes[i] + ": " + (i+1));
+            // print(shuffledTypes[i] + ": " + (i+1));
         }
     }
 }

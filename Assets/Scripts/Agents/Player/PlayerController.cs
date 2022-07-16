@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
 
     public float jumpMoveDelay = 0.1f;
 
+    [Range(0f, 1f)] public float skipPowerFraction = 0.5f;
+
     // === STATE 
 
     // Remember starting position
@@ -32,7 +34,7 @@ public class PlayerController : MonoBehaviour
 
     // Action performed when no other action is selected
     public void StandardAction() {
-        movement.MakeJump(0.3f)();
+        movement.MakeJump(skipPowerFraction)();
     }
     
     public void Jump(InputAction.CallbackContext callbackContext)
@@ -40,7 +42,7 @@ public class PlayerController : MonoBehaviour
         if (!callbackContext.performed || !callbackContext.ReadValueAsButton()) return;
 
         // Add jump action
-        rhythmicExecuter.AddBeatAction("jump", movement.MakeJump());
+        rhythmicExecuter.AddBeatAction("jump", movement.MakeJump(1f - skipPowerFraction));
 
         // If already had a move action, double it's speed
         if (rhythmicExecuter.GetBeatAction("move") == null) return;
