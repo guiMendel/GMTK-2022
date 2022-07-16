@@ -71,6 +71,9 @@ public class Movement : MonoBehaviour
     {
         Direction = Mathf.Sign(direction);
 
+        // Rotate
+        if (transform.localScale.x != Direction) FlipObject();
+
         return () => StartCoroutine(
             DelayMoveIfObstructed(Direction, obstructedMovementDelay, tiles)
         );
@@ -95,6 +98,23 @@ public class Movement : MonoBehaviour
 
         // Move
         Move(moveSpeed);
+    }
+
+    void FlipObject() {
+        // Change local scale
+        transform.localScale = new Vector3(
+            Direction, transform.localScale.y, transform.localScale.z
+        );
+
+        // Change particle systems flip state
+        ParticleSystem[] systems = GetComponentsInChildren<ParticleSystem>();
+
+        foreach(ParticleSystem system in systems) {
+            system.transform.localScale = new Vector3(
+                Direction, system.transform.localScale.y, system.transform.localScale.z
+            );
+        }
+
     }
 
     // Stops movement

@@ -6,6 +6,8 @@ public class EnemyDonkey : EnemyType
 {
     public override UniverseType HomeUniverse => FindObjectOfType<UniverseOldWest>();
 
+    protected override void OnStart() {}
+
     protected override void BeatAction() {
         // print("Yee Haw!");
     }

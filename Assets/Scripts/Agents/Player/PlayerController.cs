@@ -18,12 +18,14 @@ public class PlayerController : MonoBehaviour
     
     RhythmicExecuter rhythmicExecuter;
     Movement movement;
+    Collider2D collider2d;
 
     public void Start() {
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
         movement = GetComponent<Movement>();
+        collider2d = GetComponent<Collider2D>();
 
-        EnsureNotNull.Objects(rhythmicExecuter, movement);
+        EnsureNotNull.Objects(rhythmicExecuter, movement, collider2d);
 
         startingPosition = transform.position;
     }
@@ -69,6 +71,8 @@ public class PlayerController : MonoBehaviour
     }
 
     public void Die() {
+        print("Die pls");
+        
         StartCoroutine(DieCoroutine());
     }
 
@@ -80,6 +84,7 @@ public class PlayerController : MonoBehaviour
         spriteRenderer.enabled = false;
         rigidBody.velocity = Vector3.zero;
         rigidBody.isKinematic = true;
+        collider2d.enabled = false;
         
         // Wait time
         yield return new WaitForSeconds(resetDelay);
@@ -91,6 +96,7 @@ public class PlayerController : MonoBehaviour
 
             spriteRenderer.enabled = true;
             rigidBody.isKinematic = false;
+            collider2d.enabled = true;
             rigidBody.velocity = Vector3.zero;
         });
     }

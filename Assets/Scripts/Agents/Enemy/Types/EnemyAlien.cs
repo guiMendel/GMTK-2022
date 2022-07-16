@@ -6,6 +6,9 @@ public class EnemyAlien : EnemyType
 {
     public override UniverseType HomeUniverse => FindObjectOfType<UniverseSpace>();
 
+    protected override void OnStart() {}
+
+
     protected override void BeatAction() {
         // print("Pounce!");
     }

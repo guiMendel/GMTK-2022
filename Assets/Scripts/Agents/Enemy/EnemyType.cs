@@ -21,6 +21,8 @@ abstract public class EnemyType : MonoBehaviour
 
     abstract protected void BeatAction();
 
+    protected abstract void OnStart();
+
     
     private void Start() {
         universeDieMap = FindObjectOfType<UniverseDieMap>();
@@ -30,6 +32,8 @@ abstract public class EnemyType : MonoBehaviour
 
         // Every counterbeat, prepare for this beat's action
         rhythmicExecuter.OnEveryCounterbeat.AddListener(ActionPrepare);
+
+        OnStart();
     }
 
     private void OnDestroy() {
@@ -42,7 +46,7 @@ abstract public class EnemyType : MonoBehaviour
         if (IsActive == false) return;
 
         // Play anticipation animation
-        print(FindObjectOfType<TheDie>().Value + ": " + this.GetType().Name);
+        // print(FindObjectOfType<TheDie>().Value + ": " + this.GetType().Name);
 
         // Set up a beat action
         rhythmicExecuter.AddBeatAction("enemyAction", BeatAction);
