@@ -11,6 +11,10 @@ public class Movement : MonoBehaviour
     
     public float jumpForce = 25f;
 
+    public LayerMask groundLayers;
+
+    public float groundCheckDistance = 0.6f;
+
     // === STATE
 
     // Store 1 square movement distance
@@ -67,7 +71,9 @@ public class Movement : MonoBehaviour
         return () => rigidBody.AddForce(Vector2.up * jumpForce * powerModifier, ForceMode2D.Impulse);
     }
 
-    public UnityAction MakeMove(float direction, int tiles = 1, float obstructedMovementDelay = 0.0f)
+    public UnityAction MakeMove(
+        float direction, int tiles = 1, float obstructedMovementDelay = 0.0f, UnityAction callback = null
+    )
     {
         Direction = Mathf.Sign(direction);
 
@@ -75,7 +81,7 @@ public class Movement : MonoBehaviour
         if (transform.localScale.x != Direction) FlipObject();
 
         return () => StartCoroutine(
-            DelayMoveIfObstructed(Direction, obstructedMovementDelay, tiles)
+            DelayMoveIfObstructed(Direction, obstructedMovementDelay, tiles, callback)
         );
     }
 
@@ -83,7 +89,9 @@ public class Movement : MonoBehaviour
         rigidBody.velocity = new Vector2(moveSpeed, rigidBody.velocity.y);
     }
 
-    IEnumerator DelayMoveIfObstructed(float direction, float delay, int tiles = 1) {
+    IEnumerator DelayMoveIfObstructed(
+        float direction, float delay, int tiles = 1, UnityAction callback = null
+    ) {
         // Safeguard
         if (delay >= moveTime) {
             throw new Exception("Movement delay may not exceed movement time");
@@ -95,6 +103,9 @@ public class Movement : MonoBehaviour
         
         // Wait delay
         if (IsObstructed()) yield return new WaitForSeconds(delay);
+
+        // Execute callback
+        if (callback != null) callback();
 
         // Move
         Move(moveSpeed);
@@ -120,5 +131,15 @@ public class Movement : MonoBehaviour
     // Stops movement
     void StopMovement() {
         rigidBody.velocity = new Vector2(0.0f, rigidBody.velocity.y);
+    }
+
+    public bool IsGrounded {
+        get {
+            RaycastHit2D hit = Physics2D.Raycast(
+                transform.position, -Vector2.up, groundCheckDistance, groundLayers
+            );
+
+            return hit.collider != null;
+        }
     }
 }

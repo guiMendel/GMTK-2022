@@ -351,6 +351,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpForce: 25
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  groundCheckDistance: 0.6
 --- !u!114 &282462234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1331,7 +1335,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.25}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1342,7 +1346,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
 --- !u!114 &531069345
 MonoBehaviour:
@@ -1357,7 +1361,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpMoveDelay: 0.1
-  skipPowerFraction: 0.5
+  skipPowerFraction: 0.35
+  hopGravityReduction: 0.35
 --- !u!50 &531069346
 Rigidbody2D:
   serializedVersion: 4
@@ -1393,7 +1398,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnIdleBeat:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 531069345}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: ReduceGravity
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnIdleCounterbeat:
     m_PersistentCalls:
       m_Calls: []
@@ -1458,6 +1475,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpForce: 25
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 1024
+  groundCheckDistance: 0.6
 --- !u!114 &531069350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1908,7 +1929,7 @@ GameObject:
   - component: {fileID: 983195028}
   - component: {fileID: 983195029}
   - component: {fileID: 983195027}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}

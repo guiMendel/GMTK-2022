@@ -63,8 +63,6 @@ public class PlayerAnimation : AnimationManager
         // Calculate the time
         jumpStartTimeAfterCounterbeat = halfBeat - jumpAnticipationDuration;
 
-        print(jumpStartTimeAfterCounterbeat);
-
         if (jumpAnticipationDuration < 0) {
             throw new Exception("Player jump anticipation starts before the counterbeat");
         }
