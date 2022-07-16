@@ -29,6 +29,11 @@ public class PlayerController : MonoBehaviour
 
         // Add jump action
         rhythmicExecuter.AddBeatAction("jump", movement.MakeJump());
+
+        // If already had a move action, double it's speed
+        if (rhythmicExecuter.GetBeatAction("move") == null) return;
+
+        rhythmicExecuter.AddBeatAction("move", movement.MakeMove(movement.Direction * 2f));
     }
 
     public void Move(InputAction.CallbackContext callbackContext)
@@ -37,6 +42,9 @@ public class PlayerController : MonoBehaviour
 
         // Ignore 0s
         if (inputDirection == 0) return;
+
+        // If has a jump action, move double the distance
+        if (rhythmicExecuter.GetBeatAction("jump") != null) inputDirection *= 2.0f;
 
         rhythmicExecuter.AddBeatAction("move", movement.MakeMove(inputDirection));
     }

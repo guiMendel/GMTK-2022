@@ -14,6 +14,9 @@ public class Movement : MonoBehaviour
     // Store movement speed, computed from cell distance and beat time
     float moveSpeed;
 
+    // Remember last movement direction
+    public float Direction { get; private set; }
+
     // === REFS
     
     Rigidbody2D rigidBody;
@@ -34,6 +37,9 @@ public class Movement : MonoBehaviour
 
         // Cancel horizontal movement on counterbeat
         FindObjectOfType<RhythmicExecuter>().OnIdleCounterbeat.AddListener(StopMovement);
+
+        // Init direction
+        Direction = 1f;
     }
 
     private void OnDestroy() {
@@ -49,6 +55,8 @@ public class Movement : MonoBehaviour
 
     public UnityAction MakeMove(float direction)
     {
+        Direction = Mathf.Sign(direction);
+        
         return () => rigidBody.velocity = new Vector2(direction * moveSpeed, rigidBody.velocity.y);
     }
 

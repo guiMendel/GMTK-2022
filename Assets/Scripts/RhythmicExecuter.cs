@@ -61,6 +61,15 @@ public class RhythmicExecuter : MonoBehaviour
         counterbeatActions[key] = newAction;
     }
 
+    public UnityAction GetBeatAction(string key) {
+        return beatActions.ContainsKey(key) ? beatActions[key] : null;
+    }
+
+
+    public UnityAction GetCounterbeatAction(string key) {
+        return counterbeatActions.ContainsKey(key) ? counterbeatActions[key] : null;
+    }
+
     public void ClearBeatActions() {
         beatActions.Clear();
     }
