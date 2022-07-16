@@ -86,6 +86,9 @@ public class Movement : MonoBehaviour
     }
 
     void Move(float moveSpeed) {
+        // Stop if not grounded
+        if (IsGrounded == false) return;
+        
         rigidBody.velocity = new Vector2(moveSpeed, rigidBody.velocity.y);
     }
 
@@ -103,6 +106,9 @@ public class Movement : MonoBehaviour
         
         // Wait delay
         if (IsObstructed()) yield return new WaitForSeconds(delay);
+
+        // Stop if not grounded
+        if (IsGrounded == false) yield break;
 
         // Execute callback
         if (callback != null) callback();

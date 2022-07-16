@@ -19,12 +19,14 @@ public class PlayerAnimation : AnimationManager
     // === REFS
 
     RhythmicExecuter rhythmicExecuter;
+    Movement movement;
 
     
     override protected void OnStart() {
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
+        movement = GetComponent<Movement>();
 
-        EnsureNotNull.Objects(rhythmicExecuter);
+        EnsureNotNull.Objects(rhythmicExecuter, movement);
 
         GetJumpTime();
         
@@ -43,6 +45,9 @@ public class PlayerAnimation : AnimationManager
     IEnumerator JumpStartAfterDelay() {
         // Wait until correct time
         yield return new WaitForSeconds(jumpStartTimeAfterCounterbeat);
+
+        // Stop if not grounded
+        if (movement.IsGrounded == false) yield break;
 
         SetAnimationState(LEAVE_GROUND);
     }

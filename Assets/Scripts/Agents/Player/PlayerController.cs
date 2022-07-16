@@ -92,6 +92,9 @@ public class PlayerController : MonoBehaviour
     }
 
     public void ReduceGravity() {
+        // Stop if not grounded
+        if (movement.IsGrounded == false) return;
+        
         body.gravityScale = hopGravityReduction;
 
         // Return to normal on counterbeat
