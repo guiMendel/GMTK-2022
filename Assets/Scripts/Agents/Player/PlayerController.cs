@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
 public class PlayerController : MonoBehaviour
 {
+    // === INTERFACE
+
+    public float jumpMoveDelay = 0.1f;
+
+    // === STATE 
+
+    // Remember starting position
+    Vector3 startingPosition;
+    
     // === REFS
     
     RhythmicExecuter rhythmicExecuter;
@@ -16,6 +24,8 @@ public class PlayerController : MonoBehaviour
         movement = GetComponent<Movement>();
 
         EnsureNotNull.Objects(rhythmicExecuter, movement);
+
+        startingPosition = transform.position;
     }
 
     // Action performed when no other action is selected
@@ -33,7 +43,9 @@ public class PlayerController : MonoBehaviour
         // If already had a move action, double it's speed
         if (rhythmicExecuter.GetBeatAction("move") == null) return;
 
-        rhythmicExecuter.AddBeatAction("move", movement.MakeMove(movement.Direction * 2f));
+        // If obstructed, delay move
+        MoveDelayIfObstructed(movement.Direction, 2);
+
     }
 
     public void Move(InputAction.CallbackContext callbackContext)
@@ -44,9 +56,22 @@ public class PlayerController : MonoBehaviour
         if (inputDirection == 0) return;
 
         // If has a jump action, move double the distance
-        if (rhythmicExecuter.GetBeatAction("jump") != null) inputDirection *= 2.0f;
+        int tiles = rhythmicExecuter.GetBeatAction("jump") != null ? 2 : 1;
+        
+        // If is obstructed, try delaying movement so that jump cna hop over single tile height walls
+        MoveDelayIfObstructed(inputDirection, tiles);
+    }
 
-        rhythmicExecuter.AddBeatAction("move", movement.MakeMove(inputDirection));
+    void MoveDelayIfObstructed(float direction, int tiles) {
+        if (movement.IsObstructed()) {
+            rhythmicExecuter.AddBeatAction(
+                "move", movement.MakeDelayedMove(direction, jumpMoveDelay, tiles)
+            );
+
+            return;
+        }
+
+        rhythmicExecuter.AddBeatAction("move", movement.MakeMove(direction, tiles));
     }
 
     public void Cancel(InputAction.CallbackContext callbackContext)
@@ -69,9 +94,15 @@ public class PlayerController : MonoBehaviour
         
         // Wait time
         yield return new WaitForSeconds(resetDelay);
-        
-        StageController stageController = FindObjectOfType<StageController>();
 
-        stageController.ResetStage();
+        // Respawn on beat
+        rhythmicExecuter.AddBeatAction("respawn", () => {
+            // Return to starting position and reenable
+            transform.position = startingPosition;
+
+            spriteRenderer.enabled = true;
+            rigidBody.isKinematic = false;
+            rigidBody.velocity = Vector3.zero;
+        });
     }
 }
