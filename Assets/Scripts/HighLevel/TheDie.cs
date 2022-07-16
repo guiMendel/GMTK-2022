@@ -9,6 +9,8 @@ public class TheDie : MonoBehaviour
 
     [Range(1, 3)] public int beatsPerRoll = 1;
 
+    [Range(1, 6)] public int totalFaces = 4;
+
     public Event.Int OnDieRoll;
     
     // === STATE
@@ -22,6 +24,7 @@ public class TheDie : MonoBehaviour
     // === REFS
 
     RhythmicExecuter rhythmicExecuter;
+
     
     // Start is called before the first frame update
     void Start()
@@ -46,7 +49,7 @@ public class TheDie : MonoBehaviour
         if (--beatsUntilNextRoll > 0) return;
         
         // Get a random number between 1 and 6
-        Value = Random.Range(1, 5);
+        Value = Random.Range(1, totalFaces + 1);
 
         OnDieRoll.Invoke(Value);
 

@@ -12,6 +12,10 @@ public class RhythmicExecuter : MonoBehaviour
 
     // Triggered when no counterbeat action is available on counterbeat
     public UnityEvent OnIdleCounterbeat;
+
+    public UnityEvent OnEveryBeat;
+
+    public UnityEvent OnEveryCounterbeat;
     
     // === STATE
 
@@ -29,6 +33,8 @@ public class RhythmicExecuter : MonoBehaviour
     public void Start() {
         OnIdleBeat ??= new UnityEvent();
         OnIdleCounterbeat ??= new UnityEvent();
+        OnEveryBeat ??= new UnityEvent();
+        OnEveryCounterbeat ??= new UnityEvent();
         
         beatActions = new Dictionary<string, UnityAction>();
         counterbeatActions = new Dictionary<string, UnityAction>();
@@ -84,17 +90,20 @@ public class RhythmicExecuter : MonoBehaviour
     }
 
     void BeatListener() {
-        PerformActions(beatActions, OnIdleBeat);
+        PerformActions(beatActions, OnEveryBeat, OnIdleBeat);
     }
 
     void CounterbeatListener() {
-        PerformActions(counterbeatActions, OnIdleCounterbeat);
+        PerformActions(counterbeatActions, OnEveryCounterbeat, OnIdleCounterbeat);
     }
 
     // Performs the current beat action
-    void PerformActions(Dictionary<string, UnityAction> actions, UnityEvent OnIdle) {
+    void PerformActions(Dictionary<string, UnityAction> actions, UnityEvent always, UnityEvent OnIdle) {
         // Firstly, snap
         SnapToGrid();
+
+        // Snap always event
+        always.Invoke();
         
         // If no actions, invoke idle event
         if (actions.Count == 0) {

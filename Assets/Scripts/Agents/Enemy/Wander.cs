@@ -28,12 +28,12 @@ public class Wander : MonoBehaviour
         EnsureNotNull.Objects(rhythmicExecuter, movement, grid);
 
         // Set default beat action to follow waypoint
-        rhythmicExecuter.OnIdleBeat.AddListener(MoveToWaypoint);
+        rhythmicExecuter.OnEveryBeat.AddListener(MoveToWaypoint);
     }
 
     private void OnDestroy() {
         // Clean up listeners
-        rhythmicExecuter?.OnIdleBeat?.RemoveListener(MoveToWaypoint);
+        rhythmicExecuter?.OnEveryBeat?.RemoveListener(MoveToWaypoint);
     }
 
     void MoveToWaypoint() {
