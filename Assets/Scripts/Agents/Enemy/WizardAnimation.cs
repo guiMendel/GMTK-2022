@@ -30,6 +30,8 @@ public class WizardAnimation : AnimationManager
         rhythmicExecuter.OnEveryCounterbeat.AddListener(SetSwim);
 
         rhythmicExecuter.OnEveryBeat.AddListener(SetImpulse);
+
+        wizard.OnReset.AddListener(SetSpawn);
     }
 
     public void StartMoving() {
@@ -39,6 +41,7 @@ public class WizardAnimation : AnimationManager
     private void OnDestroy() {
         rhythmicExecuter?.OnEveryCounterbeat?.RemoveListener(SetSwim);
         rhythmicExecuter?.OnEveryBeat?.RemoveListener(SetImpulse);
+        wizard?.OnReset?.RemoveListener(SetSpawn);
     }
 
     void SetSwim() {
@@ -49,5 +52,9 @@ public class WizardAnimation : AnimationManager
     void SetImpulse() {
         if (wizard.active)        
         SetAnimationState(IMPULSE);
+    }
+
+    void SetSpawn() {
+        SetAnimationState(SPAWN);
     }
 }

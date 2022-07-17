@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Wizard : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class Wizard : MonoBehaviour
     bool freezePosition;
 
     public bool active;
+
+    public UnityEvent OnReset;
     
     
     // === REFS
@@ -24,6 +27,7 @@ public class Wizard : MonoBehaviour
         playerController = FindObjectOfType<PlayerController>();
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
         rigidBody = GetComponent<Rigidbody2D>();
+        OnReset ??= new UnityEvent();
 
         EnsureNotNull.Objects(playerController, rhythmicExecuter, rigidBody);
     }
@@ -84,6 +88,9 @@ public class Wizard : MonoBehaviour
     }
 
     void ResetPosition() {
+        OnReset.Invoke();
+        active = false;
+        
         transform.position = initialPosition;
         transform.localScale = Vector3.one;
 
