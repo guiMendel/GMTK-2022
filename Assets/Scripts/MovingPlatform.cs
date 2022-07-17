@@ -11,6 +11,8 @@ public class MovingPlatform : MonoBehaviour
     // Waypoints container that should hold the waypoints to follow
     public Transform WaypointsContainer;
 
+    public float objectSnapDistance = 0.3f;
+
     // === STATE 
 
     // Current waypoint to follow
@@ -25,11 +27,13 @@ public class MovingPlatform : MonoBehaviour
     RhythmicExecuter rhythmicExecuter;
     Grid grid;
     Rigidbody2D rigidBody;
+    Collider2D collider2d;
 
     private void Start() {
         rhythmicExecuter = FindObjectOfType<RhythmicExecuter>();
         grid = FindObjectOfType<Grid>();
         rigidBody = GetComponent<Rigidbody2D>();
+        collider2d = GetComponent<Collider2D>();
 
         EnsureNotNull.Objects(rhythmicExecuter, grid, rigidBody);
 
@@ -92,9 +96,24 @@ public class MovingPlatform : MonoBehaviour
 
         // Move
         rigidBody.velocity = moveDirection * moveSpeed;
+
+        // Detect things standing on top
+        MoveThingsOnTop(moveDirection * moveSpeed);
     }
 
     void StopMoving() {
         rigidBody.velocity = Vector2.zero;
+    }
+
+    void MoveThingsOnTop(Vector2 movement) {
+        // Get everything on top
+        RaycastHit2D[] hits = new RaycastHit2D[5];
+        collider2d.Cast(Vector2.up, hits, objectSnapDistance);
+
+        foreach (RaycastHit2D hit in hits) {
+            if (hit.transform == null) break;
+            
+            hit.rigidbody.velocity += movement;
+        }
     }
 }

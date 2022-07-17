@@ -245,8 +245,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac806553b56554054a9909e13ca03839, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  remainTimeBeats: 0
+  remainTimeBeats: 2
   WaypointsContainer: {fileID: 1631980280}
+  objectSnapDistance: 0.3
 --- !u!1 &165146054
 GameObject:
   m_ObjectHideFlags: 0
