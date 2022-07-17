@@ -17,6 +17,11 @@ public class Health : MonoBehaviour
     // === STATE
 
     public bool isDead;
+
+
+    // === PROPERTIES
+
+    public bool Invulnerable { get; set; }
     
 
     public void Start() {
@@ -24,8 +29,8 @@ public class Health : MonoBehaviour
     }
 
     public void OnTriggerEnter2D(Collider2D otherCollider) {
-        // Check if this collider is in the kill list
-        if (ColliderInKillLayer(otherCollider)) {
+        // Check if this collider is in the kill list AND not invulnerable
+        if (ColliderInKillLayer(otherCollider) && Invulnerable == false) {
             OnDeath.Invoke();
 
             isDead = true;

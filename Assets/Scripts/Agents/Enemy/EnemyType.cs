@@ -13,6 +13,7 @@ abstract public class EnemyType : MonoBehaviour
     
     // === REFS
 
+    EnemyFreezer enemyFreezer;
     UniverseMapper UniverseMapper;
     protected RhythmicExecuter rhythmicExecuter;
     protected Movement movement;
@@ -31,13 +32,25 @@ abstract public class EnemyType : MonoBehaviour
 
     protected abstract void OnStart();
 
+
+    void BeatActionWrapper() {
+        if (enemyFreezer.frozen) {
+            enemyFreezer.Unfreeze();
+            
+            return;
+        }
+
+        BeatAction();
+    }
+
     
     private void Start() {
         UniverseMapper = FindObjectOfType<UniverseMapper>();
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
         movement = GetComponent<Movement>();
+        enemyFreezer = GetComponentInChildren<EnemyFreezer>();
 
-        EnsureNotNull.Objects(UniverseMapper, rhythmicExecuter, movement);
+        EnsureNotNull.Objects(UniverseMapper, rhythmicExecuter, movement, enemyFreezer);
 
         // Every counterbeat, prepare for this beat's action
         rhythmicExecuter.OnEveryCounterbeat.AddListener(ActionPrepare);
@@ -67,6 +80,6 @@ abstract public class EnemyType : MonoBehaviour
         // print(FindObjectOfType<TheDie>().Value + ": " + this.GetType().Name);
 
         // Set up a beat action
-        rhythmicExecuter.AddBeatAction("enemyAction", BeatAction);
+        rhythmicExecuter.AddBeatAction("enemyAction", BeatActionWrapper);
     }
 }

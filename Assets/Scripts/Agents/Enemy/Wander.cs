@@ -16,27 +16,29 @@ public class Wander : MonoBehaviour
 
     // === REFS
 
-    RhythmicExecuter rhythmicExecuter;
+    Beat beat;
     Movement movement;
     Grid grid;
 
     private void Start() {
-        rhythmicExecuter = FindObjectOfType<RhythmicExecuter>();
+        beat = FindObjectOfType<Beat>();
         movement = GetComponent<Movement>();
         grid = FindObjectOfType<Grid>();
 
-        EnsureNotNull.Objects(rhythmicExecuter, movement, grid);
+        EnsureNotNull.Objects(beat, movement, grid);
 
         // Set default beat action to follow waypoint
-        rhythmicExecuter.OnEveryBeat.AddListener(MoveToWaypoint);
+        beat.beatTrigger.AddListener(MoveToWaypoint);
     }
 
     private void OnDestroy() {
         // Clean up listeners
-        rhythmicExecuter?.OnEveryBeat?.RemoveListener(MoveToWaypoint);
+        beat?.beatTrigger?.RemoveListener(MoveToWaypoint);
     }
 
     void MoveToWaypoint() {
+        print(12312);
+        
         // Get waypoint
         Transform waypoint = WaypointsContainer.GetChild(waypointIndex);
 

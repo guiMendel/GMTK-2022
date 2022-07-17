@@ -17,8 +17,8 @@ TagManager:
   - EnemyMovePoint
   - Terrain
   - Background
-  - 
-  - 
+  - PlayerProjectile
+  - EnemyVulnerableBox
   - 
   - 
   - 

@@ -24,6 +24,7 @@ abstract public class Skill : MonoBehaviour
     protected virtual void BeatAction() {}
     protected virtual void CounterbeatAction() {}
     protected virtual void OnActivate() {}
+    protected virtual void OnDeactivate() {}
 
 
     private void Start() {
@@ -57,6 +58,7 @@ abstract public class Skill : MonoBehaviour
         
         // Enable when activated
         if (newValue == DieValue) OnActivate();
-        
+
+        else if (oldValue == DieValue) OnDeactivate();        
     }
 }
