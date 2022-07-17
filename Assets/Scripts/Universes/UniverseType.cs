@@ -86,6 +86,13 @@ abstract public class UniverseType : MonoBehaviour
     // Own OnActivate behavior
     void OnOwnActivate() {
         Camera.main.backgroundColor = universeColor;
-        tilemap.color = new Vector4(universeColor.r, universeColor.g, universeColor.b, 1f);
+        universeColor = new Vector4(universeColor.r, universeColor.g, universeColor.b, 1f);
+        tilemap.color = universeColor;
+
+        foreach (MovingPlatform platform in FindObjectsOfType<MovingPlatform>()) {
+            foreach (SpriteRenderer sprite in platform.GetComponentsInChildren<SpriteRenderer>()) {
+                sprite.color = universeColor;
+            }
+        }
     }
 }
