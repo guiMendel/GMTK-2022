@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     Grid grid;
     Tilemap tilemap;
     Rigidbody2D body;
+    Health health;
 
     public void Start() {
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
@@ -32,10 +33,17 @@ public class PlayerController : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         grid = FindObjectOfType<Grid>();
         tilemap = FindObjectOfType<Tilemap>();
+        health = GetComponent<Health>();
 
-        EnsureNotNull.Objects(rhythmicExecuter, movement, collider2d, grid, tilemap, GetComponent<Rigidbody>());
+        EnsureNotNull.Objects(rhythmicExecuter, movement, collider2d, grid, tilemap, body, health);
 
         startingPosition = transform.position;
+
+        health.OnDeath.AddListener(Die);
+    }
+
+    private void OnDestroy() {
+        health.OnDeath.RemoveListener(Die);
     }
     
     public void Jump(InputAction.CallbackContext callbackContext)
@@ -81,7 +89,6 @@ public class PlayerController : MonoBehaviour
         // Hide & disable physics
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
-        spriteRenderer.enabled = false;
         body.velocity = Vector3.zero;
         body.isKinematic = true;
         collider2d.enabled = false;
@@ -98,6 +105,7 @@ public class PlayerController : MonoBehaviour
             body.isKinematic = false;
             collider2d.enabled = true;
             body.velocity = Vector3.zero;
+            health.isDead = false;
         });
     }
 }

@@ -11,16 +11,24 @@ public class Health : MonoBehaviour
     public LayerMask killLayers;
 
     // Execute instantly on death
-    public UnityEvent onDeath;
+    public UnityEvent OnDeath;
+
+
+    // === STATE
+
+    public bool isDead;
+    
 
     public void Start() {
-        onDeath ??= new UnityEvent();
+        OnDeath ??= new UnityEvent();
     }
 
     public void OnTriggerEnter2D(Collider2D otherCollider) {
         // Check if this collider is in the kill list
         if (ColliderInKillLayer(otherCollider)) {
-            onDeath.Invoke();
+            OnDeath.Invoke();
+
+            isDead = true;
 
             // Warn collided thing
             otherCollider.gameObject.SendMessage("OnHitPlayer", SendMessageOptions.DontRequireReceiver);

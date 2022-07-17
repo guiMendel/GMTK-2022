@@ -10,6 +10,7 @@ public class PlayerAnimation : AnimationManager
     const string LEAVE_GROUND = "Leave Ground";
     const string SPIN = "Spin";
     const string LAND = "Land";
+    const string DIE = "Die";
 
     // === STATE
 
@@ -21,19 +22,41 @@ public class PlayerAnimation : AnimationManager
     // === REFS
 
     RhythmicExecuter rhythmicExecuter;
+    Health health;
+    SpriteRenderer spriteRenderer;
     
     override protected void OnStart() {
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
+        health = GetComponent<Health>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
-        EnsureNotNull.Objects(rhythmicExecuter);
+        EnsureNotNull.Objects(rhythmicExecuter, health, spriteRenderer);
 
         GetJumpTime();
         
         // On counterbeat, prepare to start jump animation
         rhythmicExecuter.OnEveryCounterbeat.AddListener(CountJumpStart);
+
+        // Subscribe to death
+        health.OnDeath.AddListener(SetDie);
     }
 
     private void Update() {
+        if (health.isDead) return;
+
+        DetectAirborne();
+    }
+
+    private void OnDestroy() {
+        rhythmicExecuter?.OnEveryCounterbeat?.RemoveListener(CountJumpStart);
+        health?.OnDeath?.RemoveListener(SetDie);
+    }
+
+    public void HideSprite() {
+        spriteRenderer.enabled = false;
+    }
+
+    void DetectAirborne() {
         // Detect landing
         bool isAirborne = !movement.IsGrounded;
 
@@ -48,11 +71,13 @@ public class PlayerAnimation : AnimationManager
         wasAirborne = isAirborne;
     }
 
-    private void OnDestroy() {
-        rhythmicExecuter?.OnEveryCounterbeat?.RemoveListener(CountJumpStart);
+    void SetDie() {
+        SetAnimationState(DIE);
     }
 
     void CountJumpStart() {
+        if (health.isDead) return;
+        
         StartCoroutine(JumpStartAfterDelay());
     }
 
