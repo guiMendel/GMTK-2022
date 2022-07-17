@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 abstract public class UniverseType : MonoBehaviour
 {
@@ -8,12 +9,15 @@ abstract public class UniverseType : MonoBehaviour
     
     public List<GameObject> synchronizeObjects;
 
+    public Color universeColor;
+
 
     // === REFS
 
     UniverseMapper UniverseMapper;
     TheDie theDie;
     RhythmicExecuter rhythmicExecuter;
+    Tilemap tilemap;
 
 
     // === PROPERTIES
@@ -34,8 +38,9 @@ abstract public class UniverseType : MonoBehaviour
         UniverseMapper = FindObjectOfType<UniverseMapper>();
         theDie = FindObjectOfType<TheDie>();
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
+        tilemap = FindObjectOfType<Tilemap>();
 
-        EnsureNotNull.Objects(UniverseMapper, theDie, rhythmicExecuter);
+        EnsureNotNull.Objects(UniverseMapper, theDie, rhythmicExecuter, tilemap);
 
         SetSynchronizedObjects(IsActive);
 
@@ -64,6 +69,8 @@ abstract public class UniverseType : MonoBehaviour
         if (newValue == DieValue) {
             OnActivate();
             SetSynchronizedObjects(true);
+
+            OnOwnActivate();
         }
 
         // Disable when deactivated
@@ -74,5 +81,11 @@ abstract public class UniverseType : MonoBehaviour
         foreach (var synchronizeObject in synchronizeObjects) {
             synchronizeObject.SetActive(enabled);
         }
+    }
+
+    // Own OnActivate behavior
+    void OnOwnActivate() {
+        Camera.main.backgroundColor = universeColor;
+        tilemap.color = new Vector4(universeColor.r, universeColor.g, universeColor.b, 1f);
     }
 }

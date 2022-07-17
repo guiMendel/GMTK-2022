@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
 
     // Remember starting position
     Vector3 startingPosition;
+
+    float holdingMovementKey = 0f;
     
     // === REFS
     
@@ -40,10 +42,13 @@ public class PlayerController : MonoBehaviour
         startingPosition = transform.position;
 
         health.OnDeath.AddListener(Die);
+
+        rhythmicExecuter.OnEveryCounterbeat.AddListener(AddMoveIfHolding);
     }
 
     private void OnDestroy() {
         health.OnDeath.RemoveListener(Die);
+        rhythmicExecuter.OnEveryCounterbeat.RemoveListener(AddMoveIfHolding);
     }
     
     public void Jump(InputAction.CallbackContext callbackContext)
@@ -63,16 +68,20 @@ public class PlayerController : MonoBehaviour
 
     public void Move(InputAction.CallbackContext callbackContext)
     {
-        float inputDirection = callbackContext.ReadValue<float>();
+        holdingMovementKey = callbackContext.ReadValue<float>();
 
         // Ignore 0s
-        if (inputDirection == 0) return;
+        if (holdingMovementKey == 0) return;
 
+        Move(holdingMovementKey);
+    }
+
+    void Move(float direction) {
         // If has a jump action, move double the distance
         int tiles = rhythmicExecuter.GetBeatAction("jump") != null ? 2 : 1;
         
         rhythmicExecuter.AddBeatAction(
-            "move", movement.MakeMove(inputDirection, tiles, jumpMoveDelay)
+            "move", movement.MakeMove(direction, tiles, jumpMoveDelay)
         );
     }
 
@@ -107,5 +116,11 @@ public class PlayerController : MonoBehaviour
             body.velocity = Vector3.zero;
             health.isDead = false;
         });
+    }
+
+    void AddMoveIfHolding() {
+        if (holdingMovementKey == 0f) return;
+
+        Move(holdingMovementKey);
     }
 }
