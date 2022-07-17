@@ -11,8 +11,8 @@ public class ShieldSkill : Skill
 
     // === ANIMATIONS
 
-    const string ACTIVE = "Player Shield Active";
-    const string FADE = "Player Shield Fade";
+    const string ACTIVE = "Shield";
+    const string FADE = "Shield Vanish";
     
     
     // === REFS

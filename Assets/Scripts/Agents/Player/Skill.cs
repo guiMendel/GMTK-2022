@@ -4,6 +4,8 @@ using UnityEngine;
 
 abstract public class Skill : MonoBehaviour
 {
+    public Sprite icon;
+    
     // === REFS
 
     TheDie theDie;
@@ -14,7 +16,14 @@ abstract public class Skill : MonoBehaviour
 
     // === PROPERTIES
 
-    public int DieValue => universeMapper.InverseSkill[this.GetType().ToString()];
+    public int DieValue {
+        get {
+            string name = this.GetType().ToString();
+            
+            if (universeMapper.InverseSkill.ContainsKey(name)) return  universeMapper.InverseSkill[name];
+            else return 0;
+        }
+    }
     public bool IsActive => universeMapper.CurrentSkill == this;
 
 

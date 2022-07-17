@@ -35,6 +35,7 @@ abstract public class UniverseType : MonoBehaviour
 
 
     private void Start() {
+        synchronizeObjects ??= new List<GameObject>();
         UniverseMapper = FindObjectOfType<UniverseMapper>();
         theDie = FindObjectOfType<TheDie>();
         rhythmicExecuter = GetComponent<RhythmicExecuter>();

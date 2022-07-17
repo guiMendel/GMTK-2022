@@ -37,8 +37,6 @@ public class Wander : MonoBehaviour
     }
 
     void MoveToWaypoint() {
-        print(12312);
-        
         // Get waypoint
         Transform waypoint = WaypointsContainer.GetChild(waypointIndex);
 

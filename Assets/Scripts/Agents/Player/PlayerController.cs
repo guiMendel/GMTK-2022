@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public float jumpMoveDelay = 0.1f;
 
     public UnityEvent OnRespawn;
+    public SpriteRenderer shieldRenderer;
 
     // === STATE 
 
@@ -105,6 +106,7 @@ public class PlayerController : MonoBehaviour
         body.velocity = Vector3.zero;
         body.isKinematic = true;
         collider2d.enabled = false;
+        shieldRenderer.enabled = false;
         
         // Wait time
         yield return new WaitForSeconds(resetDelay);
@@ -124,6 +126,7 @@ public class PlayerController : MonoBehaviour
         collider2d.enabled = true;
         body.velocity = Vector3.zero;
         health.isDead = false;
+        shieldRenderer.enabled = true;
     }
 
     void AddMoveIfHolding() {

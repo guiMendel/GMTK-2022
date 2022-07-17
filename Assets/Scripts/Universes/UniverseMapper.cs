@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
 
 public class UniverseMapper : MonoBehaviour
 {
+    // === INTERFACE
+
+    public Image[] skillSlots;
+    
+    
     // === STATE
 
     // Maps a die face to a Universe Type
@@ -29,8 +35,21 @@ public class UniverseMapper : MonoBehaviour
 
     // === PROPERTIES
 
-    public UniverseType CurrentUniverse => theDie.Value == 0 ? null : Type[theDie.Value];
-    public Skill CurrentSkill => theDie.Value == 0 ? null : SkillMap[theDie.Value];
+    public UniverseType CurrentUniverse {
+        get {
+            if (theDie.Value == 0 || !Type.ContainsKey(theDie.Value)) return null;
+            
+            return Type[theDie.Value];
+        }
+    }
+
+    public Skill CurrentSkill {
+        get {
+            if (theDie.Value == 0 || !SkillMap.ContainsKey(theDie.Value)) return null;
+            
+            return SkillMap[theDie.Value];
+        }
+    }
 
 
     private void Awake() {
@@ -50,6 +69,7 @@ public class UniverseMapper : MonoBehaviour
         // Initialize mapping
         Shuffle(Type, InverseType, universeTypes);
         Shuffle(SkillMap, InverseSkill, skills);
+        ShowUISkills();
     }
 
     void Shuffle<T>(
@@ -65,6 +85,12 @@ public class UniverseMapper : MonoBehaviour
             inverseMap[optionName] = i + 1;
             
             // print(optionName + ": " + (i+1));
+        }
+    }
+
+    void ShowUISkills() {
+        for (int i = 0; i < skillSlots.Length; i++) {
+            skillSlots[i].sprite = SkillMap[i+1].icon;
         }
     }
 }
