@@ -11,7 +11,7 @@ public class TheDie : MonoBehaviour
 
     [Range(1, 6)] public int totalFaces = 4;
 
-    public Event.Int OnDieRoll;
+    public Event.DoubleInt OnDieRoll;
     
     // === STATE
 
@@ -31,7 +31,7 @@ public class TheDie : MonoBehaviour
     {
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
 
-        OnDieRoll ??= new Event.Int();
+        OnDieRoll ??= new Event.DoubleInt();
 
         EnsureNotNull.Objects(rhythmicExecuter); 
 
@@ -46,9 +46,10 @@ public class TheDie : MonoBehaviour
         if (dontCount == false && --beatsUntilNextRoll > 0) return;
         
         // Get a random number between 1 and 6
+        int oldValue = Value;
         Value = Random.Range(1, totalFaces + 1);
 
-        OnDieRoll.Invoke(Value);
+        OnDieRoll.Invoke(Value, oldValue);
 
         beatsUntilNextRoll = beatsPerRoll;
     }

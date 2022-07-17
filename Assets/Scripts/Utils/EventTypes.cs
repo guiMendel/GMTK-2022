@@ -8,4 +8,5 @@ using UnityEngine.EventSystems;
 namespace Event
 {
   [Serializable] public class Int : UnityEvent<int> { }
+  [Serializable] public class DoubleInt : UnityEvent<int, int> { }
 }

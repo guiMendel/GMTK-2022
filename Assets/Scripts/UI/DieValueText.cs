@@ -21,10 +21,16 @@ public class DieValueText : MonoBehaviour
 
         EnsureNotNull.Objects(textComponent, theDie);
 
+        theDie.OnDieRoll.AddListener(SynchronizeText);
+
         SynchronizeText(theDie.Value);
     }
 
-    public void SynchronizeText(int value) {
+    private void OnDestroy() {
+        theDie?.OnDieRoll?.RemoveListener(SynchronizeText);
+    }
+
+    public void SynchronizeText(int value, int oldValue = 0) {
         textComponent.text = value.ToString();
     }
 }
