@@ -28,7 +28,7 @@ public class Health : MonoBehaviour
         OnDeath ??= new UnityEvent();
     }
 
-    public void OnTriggerEnter2D(Collider2D otherCollider) {
+    public void OnTriggerStay2D(Collider2D otherCollider) {
         // Check if this collider is in the kill list AND not invulnerable
         if (ColliderInKillLayer(otherCollider) && Invulnerable == false) {
             OnDeath.Invoke();
