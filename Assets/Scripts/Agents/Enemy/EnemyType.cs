@@ -13,14 +13,14 @@ abstract public class EnemyType : MonoBehaviour
     
     // === REFS
 
-    UniverseDieMap universeDieMap;
+    UniverseMapper UniverseMapper;
     protected RhythmicExecuter rhythmicExecuter;
     protected Movement movement;
 
 
     // === PROPERTIES
 
-    public bool IsActive => universeDieMap.CurrentUniverse == HomeUniverse;
+    public bool IsActive => UniverseMapper.CurrentUniverse == HomeUniverse;
     
 
     // === OVERRIDABLES
@@ -33,11 +33,11 @@ abstract public class EnemyType : MonoBehaviour
 
     
     private void Start() {
-        universeDieMap = FindObjectOfType<UniverseDieMap>();
+        UniverseMapper = FindObjectOfType<UniverseMapper>();
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
         movement = GetComponent<Movement>();
 
-        EnsureNotNull.Objects(universeDieMap, rhythmicExecuter, movement);
+        EnsureNotNull.Objects(UniverseMapper, rhythmicExecuter, movement);
 
         // Every counterbeat, prepare for this beat's action
         rhythmicExecuter.OnEveryCounterbeat.AddListener(ActionPrepare);

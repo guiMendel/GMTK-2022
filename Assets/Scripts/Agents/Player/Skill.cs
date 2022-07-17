@@ -2,24 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-abstract public class UniverseType : MonoBehaviour
+abstract public class Skill : MonoBehaviour
 {
-    // === INTERFACE
-    
-    public List<GameObject> synchronizeObjects;
-
-
     // === REFS
 
-    UniverseMapper UniverseMapper;
     TheDie theDie;
-    RhythmicExecuter rhythmicExecuter;
+    UniverseMapper universeMapper;
+    protected RhythmicExecuter rhythmicExecuter;
+    protected Movement movement;
 
 
     // === PROPERTIES
 
-    public int DieValue => UniverseMapper.InverseType[this.GetType().ToString()];
-    public bool IsActive => UniverseMapper.CurrentUniverse == this;
+    public int DieValue => universeMapper.InverseSkill[this.GetType().ToString()];
+    public bool IsActive => universeMapper.CurrentSkill == this;
 
 
     // === OVERRIDABLES
@@ -31,13 +27,12 @@ abstract public class UniverseType : MonoBehaviour
 
 
     private void Start() {
-        UniverseMapper = FindObjectOfType<UniverseMapper>();
+        universeMapper = FindObjectOfType<UniverseMapper>();
         theDie = FindObjectOfType<TheDie>();
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
+        movement = GetComponent<Movement>();
 
-        EnsureNotNull.Objects(UniverseMapper, theDie, rhythmicExecuter);
-
-        SetSynchronizedObjects(IsActive);
+        EnsureNotNull.Objects(universeMapper, theDie, rhythmicExecuter, movement);
 
         theDie.OnDieRoll.AddListener(WatchDieRoll);
 
@@ -61,18 +56,7 @@ abstract public class UniverseType : MonoBehaviour
         if (newValue == oldValue) return;
         
         // Enable when activated
-        if (newValue == DieValue) {
-            OnActivate();
-            SetSynchronizedObjects(true);
-        }
-
-        // Disable when deactivated
-        else if (oldValue == DieValue) SetSynchronizedObjects(false);
-    }
-
-    void SetSynchronizedObjects(bool enabled) {
-        foreach (var synchronizeObject in synchronizeObjects) {
-            synchronizeObject.SetActive(enabled);
-        }
+        if (newValue == DieValue) OnActivate();
+        
     }
 }
