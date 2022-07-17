@@ -7,6 +7,8 @@ public class RhythmicExecuter : MonoBehaviour
 {
     // === INTERFACE
 
+    public bool disableSnap;
+
     public Vector3 snapOffset;
 
     // Triggered when no beat action is available on beat
@@ -127,6 +129,8 @@ public class RhythmicExecuter : MonoBehaviour
 
     // Snaps to grid position
     void SnapToGrid() {
+        if (disableSnap) return;
+        
         transform.position =
             grid.GetCellCenterWorld(grid.WorldToCell(transform.position)) + snapOffset;
     }

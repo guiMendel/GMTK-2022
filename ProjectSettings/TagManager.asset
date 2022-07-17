@@ -16,7 +16,7 @@ TagManager:
   - EnemyHitbox
   - EnemyMovePoint
   - Terrain
-  - 
+  - Background
   - 
   - 
   - 
@@ -40,4 +40,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Player
+    uniqueID: 649513421
+    locked: 0
+  - name: Enemy
+    uniqueID: 1509526461
+    locked: 0
+  - name: Terrain
+    uniqueID: 1794160293
     locked: 0

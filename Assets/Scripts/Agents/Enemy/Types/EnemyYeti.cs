@@ -28,10 +28,10 @@ public class EnemyYeti : EnemyType
 
     protected override void BeatAction() {
         // Create a turd where is standing
-        var alteredPos = new Vector3(centeredPosition.x, centeredPosition.y - 0.22f, centeredPosition.z);
-        
-        print(alteredPos);
-        
-        Instantiate(turd, alteredPos, Quaternion.identity);
+        Instantiate(
+            turd,
+            centeredPosition + new Vector3(-movement.Direction * grid.cellSize.x, -0.22f, 0),
+            Quaternion.identity
+        );
     }
 }

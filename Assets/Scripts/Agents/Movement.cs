@@ -13,7 +13,7 @@ public class Movement : MonoBehaviour
 
     public LayerMask groundLayers;
 
-    public float groundCheckDistance = 0.6f;
+    public float groundCheckDistance = 0.2f;
 
     [Range(0f, 1f)] public float hopPowerFraction = 0.35f;
 
@@ -35,14 +35,16 @@ public class Movement : MonoBehaviour
     Rigidbody2D rigidBody;
     Grid grid;
     RhythmicExecuter rhythmicExecuter;
+    Collider2D collider2d;
 
 
     public void Start() {
         rigidBody = GetComponent<Rigidbody2D>();
         grid = FindObjectOfType<Grid>();
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
+        collider2d = GetComponent<Collider2D>();
 
-        EnsureNotNull.Objects(rigidBody, grid, rhythmicExecuter);
+        EnsureNotNull.Objects(rigidBody, grid, rhythmicExecuter, collider2d);
 
         // Calculate move speed
         Beat beat = FindObjectOfType<Beat>();
@@ -165,11 +167,10 @@ public class Movement : MonoBehaviour
 
     public bool IsGrounded {
         get {
-            RaycastHit2D hit = Physics2D.Raycast(
-                transform.position, -Vector2.up, groundCheckDistance, groundLayers
-            );
+            // RaycastHit2D[] hits = new RaycastHit2D[1];
+            int hitCount = collider2d.Cast(Vector2.down, new RaycastHit2D[1], groundCheckDistance);
 
-            return hit.collider != null;
+            return hitCount > 0;
         }
     }
 
