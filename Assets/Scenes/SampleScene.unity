@@ -1017,6 +1017,7 @@ GameObject:
   - component: {fileID: 391698575}
   - component: {fileID: 391698574}
   - component: {fileID: 391698573}
+  - component: {fileID: 391698578}
   m_Layer: 0
   m_Name: Universe Manager
   m_TagString: Untagged
@@ -1092,6 +1093,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   synchronizeObjects:
   - {fileID: 1299414260}
+  blizzard: {fileID: 1299414262}
 --- !u!114 &391698577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1104,6 +1106,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96463fca160a7470d8bb4257b18995fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &391698578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391698571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d49539d751d4560be8daee14f236a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disableSnap: 1
+  snapOffset: {x: 0, y: 0, z: 0}
+  OnIdleBeat:
+    m_PersistentCalls:
+      m_Calls: []
+  OnIdleCounterbeat:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEveryBeat:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEveryCounterbeat:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &396522839
 GameObject:
   m_ObjectHideFlags: 0
@@ -1581,6 +1609,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpMoveDelay: 0.08
+  rhythmicExecuter: {fileID: 0}
+  movement: {fileID: 0}
 --- !u!50 &531069346
 Rigidbody2D:
   serializedVersion: 4
@@ -3602,6 +3632,11 @@ BoxCollider2D:
 --- !u!1 &1299414260 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3509370196716584019, guid: 6e52000a76c894307b5816f4dcbf3e89, type: 3}
+  m_PrefabInstance: {fileID: 3509370197743042727}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1299414262 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3509370196716584017, guid: 6e52000a76c894307b5816f4dcbf3e89, type: 3}
   m_PrefabInstance: {fileID: 3509370197743042727}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1458172957

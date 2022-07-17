@@ -18,8 +18,8 @@ public class PlayerController : MonoBehaviour
     
     // === REFS
     
-    RhythmicExecuter rhythmicExecuter;
-    Movement movement;
+    public RhythmicExecuter rhythmicExecuter;
+    public Movement movement;
     Collider2D collider2d;
     Grid grid;
     Tilemap tilemap;

@@ -64,7 +64,7 @@ public class Movement : MonoBehaviour
 
     private void OnDestroy() {
         // Clean up listener
-        FindObjectOfType<RhythmicExecuter>()?.OnEveryCounterbeat.RemoveListener(StopMovement);
+        rhythmicExecuter?.OnEveryCounterbeat.RemoveListener(StopMovement);
 
     }
 
@@ -96,7 +96,7 @@ public class Movement : MonoBehaviour
         if (transform.localScale.x != Direction) FlipObject();
 
         return () => StartCoroutine(
-            DelayMoveIfObstructed(Direction, obstructedMovementDelay, tiles, callback, hop)
+            DelayMoveIfObstructed(Mathf.Sign(direction), obstructedMovementDelay, tiles, callback, hop)
         );
     }
 
@@ -104,7 +104,10 @@ public class Movement : MonoBehaviour
         // Also hop
         if (hop) Hop();
         
-        rigidBody.velocity = new Vector2(moveSpeed, rigidBody.velocity.y);
+        rigidBody.velocity = new Vector2(rigidBody.velocity.x + moveSpeed, rigidBody.velocity.y);
+
+        // Update direction based on resulting speed
+        Direction = Mathf.Sign(rigidBody.velocity.x);
     }
 
     IEnumerator DelayMoveIfObstructed(
@@ -120,7 +123,7 @@ public class Movement : MonoBehaviour
 
         // Calculate move speed
         float effectiveDelay = IsObstructed() ? delay : 0.0f;
-        float moveSpeed = Direction * tiles * tileSize / (moveTime - effectiveDelay);
+        float moveSpeed = direction * tiles * tileSize / (moveTime - effectiveDelay);
 
         // Wait delay
         if (IsObstructed()) yield return new WaitForSeconds(delay);

@@ -13,6 +13,7 @@ abstract public class UniverseType : MonoBehaviour
 
     UniverseDieMap universeDieMap;
     TheDie theDie;
+    RhythmicExecuter rhythmicExecuter;
 
 
     // === PROPERTIES
@@ -24,17 +25,29 @@ abstract public class UniverseType : MonoBehaviour
     // === OVERRIDABLES
 
     protected abstract void OnStart();
+    protected virtual void BeatAction() {}
+    protected virtual void CounterbeatAction() {}
+    protected virtual void OnActivate() {}
 
 
     private void Start() {
         universeDieMap = FindObjectOfType<UniverseDieMap>();
         theDie = FindObjectOfType<TheDie>();
+        rhythmicExecuter = GetComponent<RhythmicExecuter>();
 
-        EnsureNotNull.Objects(universeDieMap, theDie);
+        EnsureNotNull.Objects(universeDieMap, theDie, rhythmicExecuter);
 
         SetSynchronizedObjects(IsActive);
 
         theDie.OnDieRoll.AddListener(WatchDieRoll);
+
+        rhythmicExecuter.OnEveryBeat.AddListener(() => {
+            if (IsActive) BeatAction();
+        });
+
+        rhythmicExecuter.OnEveryCounterbeat.AddListener(() => {
+            if (IsActive) CounterbeatAction();
+        });
 
         OnStart();
     }
@@ -48,7 +61,10 @@ abstract public class UniverseType : MonoBehaviour
         if (newValue == oldValue) return;
         
         // Enable when activated
-        if (newValue == DieValue) SetSynchronizedObjects(true);
+        if (newValue == DieValue) {
+            OnActivate();
+            SetSynchronizedObjects(true);
+        }
 
         // Disable when deactivated
         else if (oldValue == DieValue) SetSynchronizedObjects(false);
