@@ -13,7 +13,7 @@ public class StageController : MonoBehaviour
         int newScene = Random.Range(1, 4);
 
         while (newScene == SceneManager.GetActiveScene().buildIndex) {
-            newScene = Random.Range(1, 4);
+            newScene = Random.Range(1, 6);
         }
         
         SceneManager.LoadScene(newScene);
