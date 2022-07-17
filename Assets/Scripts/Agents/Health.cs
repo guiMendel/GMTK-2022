@@ -19,7 +19,12 @@ public class Health : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D otherCollider) {
         // Check if this collider is in the kill list
-        if (ColliderInKillLayer(otherCollider)) onDeath.Invoke();;
+        if (ColliderInKillLayer(otherCollider)) {
+            onDeath.Invoke();
+
+            // Warn collided thing
+            otherCollider.gameObject.SendMessage("OnHitPlayer", SendMessageOptions.DontRequireReceiver);
+        }
     }
 
     bool ColliderInKillLayer(Collider2D otherCollider) {
