@@ -7,12 +7,15 @@ public class ShootSkill : Skill
     // === INTERFACE
 
     public GameObject projectile;
+    public AudioSource sfx;
 
     
     protected override void OnStart() {}
 
-    protected override void OnActivate() {
+    protected override void BeatAction() {
         Instantiate(projectile, transform.position, Quaternion.identity);
+
+        sfx.Play();
 
         ProjectileMovement projectileMovement = projectile.GetComponent<ProjectileMovement>();
 

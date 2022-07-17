@@ -10,6 +10,7 @@ public class EnemyDragon : EnemyType
 
     public ParticleSystem fireBreath;
     public Collider2D fireBox;
+    public AudioSource sfx;
 
     protected override void OnStart() {
         // Disable firebox
@@ -22,6 +23,8 @@ public class EnemyDragon : EnemyType
     protected override void BeatAction() {
         // Start breathing fire
         fireBreath.Play();
+
+        sfx.Play();
 
         // Activate firebox in a while
         StartCoroutine(DelayedFirebox());

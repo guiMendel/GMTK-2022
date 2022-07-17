@@ -9,12 +9,14 @@ public class DashSkill : Skill
     public int tiles = 2;
 
     public ParticleSystem dashTrail;
+    public AudioSource sfx;
     
     
     protected override void OnStart() {}
 
     protected override void CounterbeatAction() {
         rhythmicExecuter.AddBeatAction("dash", () => {
+            sfx.Play();
             movement.MakeMove(movement.Direction, tiles, hop: false)();
             dashTrail.Play();
         });

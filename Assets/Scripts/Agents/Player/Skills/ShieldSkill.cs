@@ -7,6 +7,7 @@ public class ShieldSkill : Skill
     // === INTERFACE
 
     public Animator shieldAnimator;
+    public AudioSource sfx;
 
 
     // === ANIMATIONS
@@ -28,6 +29,8 @@ public class ShieldSkill : Skill
 
     protected override void OnActivate() {
         health.Invulnerable = true;
+
+        sfx.Play();
 
         shieldAnimator.Play(ACTIVE);
     }

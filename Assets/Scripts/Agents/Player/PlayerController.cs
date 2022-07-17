@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 
     public UnityEvent OnRespawn;
     public SpriteRenderer shieldRenderer;
+    public AudioSource dieSfx;
 
     // === STATE 
 
@@ -107,6 +108,8 @@ public class PlayerController : MonoBehaviour
         body.isKinematic = true;
         collider2d.enabled = false;
         shieldRenderer.enabled = false;
+
+        dieSfx.Play();
         
         // Wait time
         yield return new WaitForSeconds(resetDelay);
