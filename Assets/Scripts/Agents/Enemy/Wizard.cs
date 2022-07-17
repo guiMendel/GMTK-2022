@@ -9,6 +9,8 @@ public class Wizard : MonoBehaviour
     float moveSpeed;
     Vector3 initialPosition;
     bool freezePosition;
+
+    public bool active;
     
     
     // === REFS
@@ -28,9 +30,6 @@ public class Wizard : MonoBehaviour
 
     private void Start() {
         initialPosition = transform.position;
-        
-        rhythmicExecuter.OnEveryBeat.AddListener(FollowPlayer);
-        rhythmicExecuter.OnEveryCounterbeat.AddListener(StopMoving);
         playerController.OnRespawn.AddListener(ResetPosition);
 
         Grid grid = FindObjectOfType<Grid>();
@@ -43,6 +42,13 @@ public class Wizard : MonoBehaviour
         rhythmicExecuter.OnEveryBeat.RemoveListener(FollowPlayer);
         rhythmicExecuter.OnEveryCounterbeat.RemoveListener(StopMoving);
         playerController.OnRespawn.RemoveListener(ResetPosition);
+    }
+
+    public void BeginAction() {
+        active = true;
+        
+        rhythmicExecuter.OnEveryBeat.AddListener(FollowPlayer);
+        rhythmicExecuter.OnEveryCounterbeat.AddListener(StopMoving);
     }
 
     void FollowPlayer() {
