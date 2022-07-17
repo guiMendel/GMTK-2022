@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
 
     public float jumpMoveDelay = 0.1f;
 
+    public UnityEvent OnRespawn;
+
     // === STATE 
 
     // Remember starting position
@@ -27,6 +29,7 @@ public class PlayerController : MonoBehaviour
     Tilemap tilemap;
     Rigidbody2D body;
     Health health;
+    SpriteRenderer spriteRenderer;
 
     public void Start() {
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
@@ -36,8 +39,11 @@ public class PlayerController : MonoBehaviour
         grid = FindObjectOfType<Grid>();
         tilemap = FindObjectOfType<Tilemap>();
         health = GetComponent<Health>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
-        EnsureNotNull.Objects(rhythmicExecuter, movement, collider2d, grid, tilemap, body, health);
+        EnsureNotNull.Objects(rhythmicExecuter, movement, collider2d, grid, tilemap, body, health, spriteRenderer);
+
+        OnRespawn ??= new UnityEvent();
 
         startingPosition = transform.position;
 
@@ -96,8 +102,6 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator DieCoroutine(float resetDelay = 1.5f) {
         // Hide & disable physics
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-
         body.velocity = Vector3.zero;
         body.isKinematic = true;
         collider2d.enabled = false;
@@ -106,16 +110,20 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(resetDelay);
 
         // Respawn on beat
-        rhythmicExecuter.AddBeatAction("respawn", () => {
-            // Return to starting position and reenable
-            transform.position = startingPosition;
+        rhythmicExecuter.AddBeatAction("respawn", Respawn);
+    }
 
-            spriteRenderer.enabled = true;
-            body.isKinematic = false;
-            collider2d.enabled = true;
-            body.velocity = Vector3.zero;
-            health.isDead = false;
-        });
+    void Respawn() {
+        OnRespawn.Invoke();
+
+        // Return to starting position and reenable
+        transform.position = startingPosition;
+
+        spriteRenderer.enabled = true;
+        body.isKinematic = false;
+        collider2d.enabled = true;
+        body.velocity = Vector3.zero;
+        health.isDead = false;
     }
 
     void AddMoveIfHolding() {
