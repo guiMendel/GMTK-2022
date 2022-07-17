@@ -16,22 +16,36 @@ public class PlayerAnimation : AnimationManager
     // How many seconds after counterbeat to start jump animation
     float jumpStartTimeAfterCounterbeat;
 
+    bool wasAirborne = false;
+
     // === REFS
 
     RhythmicExecuter rhythmicExecuter;
-    Movement movement;
-
     
     override protected void OnStart() {
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
-        movement = GetComponent<Movement>();
 
-        EnsureNotNull.Objects(rhythmicExecuter, movement);
+        EnsureNotNull.Objects(rhythmicExecuter);
 
         GetJumpTime();
         
         // On counterbeat, prepare to start jump animation
         rhythmicExecuter.OnEveryCounterbeat.AddListener(CountJumpStart);
+    }
+
+    private void Update() {
+        // Detect landing
+        bool isAirborne = !movement.IsGrounded;
+
+        // Detect landing
+        if (wasAirborne && !isAirborne) SetAnimationState(LAND);
+
+        // If is airborne, set spin unless is on Leave Ground
+        if (isAirborne && currentState != LEAVE_GROUND) {
+            SetAnimationState(SPIN);
+        }
+
+        wasAirborne = isAirborne;
     }
 
     private void OnDestroy() {

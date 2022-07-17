@@ -9,6 +9,12 @@ abstract public class AnimationManager : MonoBehaviour
     protected Animator animator;
     protected string currentState;
 
+
+    // === REFS
+
+    protected Movement movement;
+    
+
     // === OVERRIDABLES
 
     abstract protected void OnStart();
@@ -16,6 +22,7 @@ abstract public class AnimationManager : MonoBehaviour
 
     private void Start() {
         animator = GetComponent<Animator>();
+        movement = GetComponent<Movement>();
 
         EnsureNotNull.Objects(animator);
 
