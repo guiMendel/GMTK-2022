@@ -4,6 +4,13 @@ using UnityEngine;
 
 abstract public class EnemyType : MonoBehaviour
 {
+    // === INTERFACE
+
+    public SpriteRenderer spriteRenderer;
+
+    public ParticleSystem enterVFX;
+    
+    
     // === REFS
 
     UniverseDieMap universeDieMap;
@@ -45,7 +52,16 @@ abstract public class EnemyType : MonoBehaviour
 
     void ActionPrepare() {
         // If not active, do nothing
-        if (IsActive == false) return;
+        if (IsActive == false) {
+            spriteRenderer.enabled = false;
+            return;
+        }
+
+        if (spriteRenderer.enabled == false)  {
+            enterVFX.Play();
+        }
+        
+        spriteRenderer.enabled = true;
 
         // Play anticipation animation
         // print(FindObjectOfType<TheDie>().Value + ": " + this.GetType().Name);

@@ -50,3 +50,6 @@ TagManager:
   - name: Terrain
     uniqueID: 1794160293
     locked: 0
+  - name: VFX
+    uniqueID: 3823477777
+    locked: 0
