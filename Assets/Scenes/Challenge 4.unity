@@ -319,6 +319,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &944834307 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 944834307, guid: bc1b0fa877ce845148711df0722d8c65, type: 3}
+  m_PrefabInstance: {fileID: 1366563457093153216}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &953553119
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,14 +578,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 577392663732002438, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
-      propertyPath: beatTrigger.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 577392663732002438, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
-      propertyPath: beatTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 531069345}
     - target: {fileID: 577392664277550881, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
       propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -605,6 +602,10 @@ PrefabInstance:
       propertyPath: synchronizeObjects.Array.data[0]
       value: 
       objectReference: {fileID: 1299414260}
+    - target: {fileID: 577392664368562558, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
+      propertyPath: synchronizeObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 944834307}
     - target: {fileID: 577392664368562559, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
       propertyPath: skillSlots.Array.data[0]
       value: 

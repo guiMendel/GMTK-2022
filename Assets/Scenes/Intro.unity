@@ -434,6 +434,10 @@ PrefabInstance:
       propertyPath: synchronizeObjects.Array.data[0]
       value: 
       objectReference: {fileID: 1299414260}
+    - target: {fileID: 577392664368562558, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
+      propertyPath: synchronizeObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 1366563457093153217}
     - target: {fileID: 577392664368562559, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
       propertyPath: skillSlots.Array.data[0]
       value: 
@@ -507,6 +511,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 944834307, guid: bc1b0fa877ce845148711df0722d8c65, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1366563457254769819, guid: bc1b0fa877ce845148711df0722d8c65, type: 3}
       propertyPath: m_Camera
       value: 
@@ -601,6 +609,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc1b0fa877ce845148711df0722d8c65, type: 3}
+--- !u!1 &1366563457093153217 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 944834307, guid: bc1b0fa877ce845148711df0722d8c65, type: 3}
+  m_PrefabInstance: {fileID: 1366563457093153216}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3509370197743042727
 PrefabInstance:
   m_ObjectHideFlags: 0
