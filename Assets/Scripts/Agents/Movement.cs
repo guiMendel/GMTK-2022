@@ -50,7 +50,7 @@ public class Movement : MonoBehaviour
         Beat beat = FindObjectOfType<Beat>();
         
         tileSize = grid.cellSize.x;
-        moveTime = beat.secondsPerBeat / 2.0f;
+        moveTime = beat.SecondsPerCycle / 2.0f;
 
         // Cancel horizontal movement on counterbeat
         rhythmicExecuter.OnEveryCounterbeat.AddListener(StopMovement);

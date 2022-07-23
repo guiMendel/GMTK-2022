@@ -43,9 +43,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d01576bf39ed646ca939ea79a4c88651, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
-  m_Pitch: 0.7925
+  m_Pitch: 1
   Loop: 1
   Mute: 0
   Spatialize: 0
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 361ff365a13cf4a9b894950fcaf75e62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsPerBeat: 1
+  beatsPerMinute: 302.8391
   beatTrigger:
     m_PersistentCalls:
       m_Calls: []
@@ -184,6 +184,7 @@ MonoBehaviour:
       m_Calls: []
   kickObject: {fileID: 577392664225079375}
   hatObject: {fileID: 577392665474517658}
+  songObject: {fileID: 222776471}
 --- !u!1 &577392664225079375
 GameObject:
   m_ObjectHideFlags: 0

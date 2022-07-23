@@ -99,7 +99,7 @@ public class PlayerAnimation : AnimationManager
         ).length;
 
         // Get half the beat's time
-        float halfBeat = FindObjectOfType<Beat>().secondsPerBeat / 2.0f;
+        float halfBeat = FindObjectOfType<Beat>().SecondsPerCycle / 2.0f;
 
         // Get the duration of the anticipation (happens at the 6th frame, of the 7)
         float jumpAnticipationDuration = jumpDuration * 6/7;

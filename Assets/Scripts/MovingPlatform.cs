@@ -43,7 +43,7 @@ public class MovingPlatform : MonoBehaviour
 
         Beat beat = FindObjectOfType<Beat>();
 
-        moveSpeed = grid.cellSize.x / (beat.secondsPerBeat / 2.0f);
+        moveSpeed = grid.cellSize.x / (beat.SecondsPerCycle / 2.0f);
     }
 
     private void OnDestroy() {

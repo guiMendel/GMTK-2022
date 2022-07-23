@@ -24,7 +24,7 @@ public class ProjectileMovement : MonoBehaviour
         Grid grid = FindObjectOfType<Grid>();
         Beat beat = FindObjectOfType<Beat>();
 
-        moveSpeed = tilesPerBeat * grid.cellSize.x / (beat.secondsPerBeat / 4.0f);
+        moveSpeed = tilesPerBeat * grid.cellSize.x / (beat.SecondsPerCycle / 4.0f);
     }
 
     private void OnDestroy() {
