@@ -29,12 +29,13 @@ abstract public class UniverseType : MonoBehaviour
     // === OVERRIDABLES
 
     protected abstract void OnStart();
+    protected abstract void OnAwake();
     protected virtual void BeatAction() {}
-    protected virtual void CounterbeatAction() {}
+    protected virtual void DownbeatAction() {}
     protected virtual void OnActivate() {}
 
 
-    private void Start() {
+    private void Awake() {
         synchronizeObjects ??= new List<GameObject>();
         UniverseMapper = FindObjectOfType<UniverseMapper>();
         theDie = FindObjectOfType<TheDie>();
@@ -43,16 +44,20 @@ abstract public class UniverseType : MonoBehaviour
 
         EnsureNotNull.Objects(UniverseMapper, theDie, rhythmicExecuter, tilemap);
 
+        OnAwake();
+    }
+
+    private void Start() {
         SetSynchronizedObjects(IsActive);
 
         theDie.OnDieRoll.AddListener(WatchDieRoll);
 
-        rhythmicExecuter.OnEveryBeat.AddListener(() => {
+        rhythmicExecuter.OnEveryUpbeat.AddListener(() => {
             if (IsActive) BeatAction();
         });
 
-        rhythmicExecuter.OnEveryCounterbeat.AddListener(() => {
-            if (IsActive) CounterbeatAction();
+        rhythmicExecuter.OnEveryDownbeat.AddListener(() => {
+            if (IsActive) DownbeatAction();
         });
 
         OnStart();

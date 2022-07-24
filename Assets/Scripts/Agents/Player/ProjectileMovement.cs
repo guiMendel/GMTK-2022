@@ -18,7 +18,7 @@ public class ProjectileMovement : MonoBehaviour
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
         rigidBody = GetComponent<Rigidbody2D>();
 
-        rhythmicExecuter.OnEveryBeat.AddListener(Move);
+        rhythmicExecuter.OnEveryUpbeat.AddListener(Move);
 
 
         Grid grid = FindObjectOfType<Grid>();
@@ -28,7 +28,7 @@ public class ProjectileMovement : MonoBehaviour
     }
 
     private void OnDestroy() {
-        rhythmicExecuter.OnEveryBeat.RemoveListener(Move);
+        rhythmicExecuter.OnEveryUpbeat.RemoveListener(Move);
     }
 
     void Move() {

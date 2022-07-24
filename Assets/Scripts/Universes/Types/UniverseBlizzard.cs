@@ -19,11 +19,13 @@ public class UniverseBlizzard : UniverseType
     PlayerController playerController;
 
     
-    protected override void OnStart() {
+    protected override void OnAwake() {
         playerController = FindObjectOfType<PlayerController>();
 
         EnsureNotNull.Objects(playerController);
     }
+
+    protected override void OnStart() {}
 
     protected override void OnActivate() {
         // Flip direction
@@ -37,9 +39,9 @@ public class UniverseBlizzard : UniverseType
         );
     }
 
-    protected override void CounterbeatAction() {
+    protected override void DownbeatAction() {
         // Add a nudge to the player's movement
-        playerController.rhythmicExecuter.AddBeatAction(
+        playerController.rhythmicExecuter.AddUpbeatAction(
             "blizzardPush",
             playerController.movement.MakeMove(blizzardDirection, hop: false)
         );

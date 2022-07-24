@@ -12,8 +12,11 @@ public class Beat : MonoBehaviour
     // BPM of the song
     [Min(1f)] public float beatsPerMinute = 120f;
 
-    public UnityEvent beatTrigger;
-    public UnityEvent counterbeatTrigger;
+    // How many beats in a downbeat cycle
+    public float beatsPerCycle = 8f;
+
+    public UnityEvent DownbeatTrigger;
+    public UnityEvent UpbeatTrigger;
 
     public GameObject kickObject;
     public GameObject hatObject;
@@ -21,20 +24,30 @@ public class Beat : MonoBehaviour
 
     // === STATE
 
-    // Position of the song, in seconds
-    float songPosition;
-
-    // Song position, in beats
-    float songPositionBeats;
-
     // Seconds elapsed since song start
-    float dspTime;
+    float initialDspTime;
+
+    // When to trigger next downbeat
+    float nextDownbeat;
+
+    // When to trigger next upbeat
+    float nextUpbeat;
+
+
+    // === PROPERTIES
     
-    // Duration of a beat
+    // Duration of a downbeat
     float SecondsPerBeat => 60f / beatsPerMinute;
 
     // Duration of a move cycle, in seconds
-    public float SecondsPerCycle => SecondsPerBeat * 8f;
+    public float SecondsPerCycle => SecondsPerBeat * beatsPerCycle;
+
+    // Song position, in downbeats
+    float SongPositionBeats => SongPosition / SecondsPerBeat;
+
+    // Position of the song, in seconds
+    float SongPosition => (float) AudioSettings.dspTime - initialDspTime;
+
 
     // === REFS
 
@@ -51,52 +64,67 @@ public class Beat : MonoBehaviour
         hatSource = hatObject.GetComponent<AudioSource>();
         songSource = songObject.GetComponent<AudioSource>();
         
-        beatTrigger ??= new UnityEvent();
-        counterbeatTrigger ??= new UnityEvent();
+        DownbeatTrigger ??= new UnityEvent();
+        UpbeatTrigger ??= new UnityEvent();
 
         EnsureNotNull.Objects(kickSource, hatSource, theDie);
     }
 
     private void Start() {
-
         // Get song start time
-        dspTime = (float) AudioSettings.dspTime;
+        initialDspTime = (float) AudioSettings.dspTime;
 
         // Start song
         songSource.Play();
-        
-        StartCoroutine(BeatTimer());
+
+        // Register first downbeat
+        Downbeat();
+
+        // Init fields
+        nextDownbeat = beatsPerCycle;
+        nextUpbeat = beatsPerCycle / 2f;
     }
 
-    // Coroutine that triggers the beat method in it's beat time
-    private IEnumerator BeatTimer() {
-        // Whether is triggering beat or counterbeat
-        bool isCounter = false;
+    private void Update() {
+        // When either a downbeat or upbeat triggers, this is incremented
+        int triggered;
 
-        // Calculate loop time (every 4 beats)
-        float loopTime = SecondsPerBeat * 4f;
-        
-        while (true) {
-            float beatStart = DateTime.Now.Second;
-
-            // If counterbeat, first of all we let the die know
-            if (isCounter) theDie.CheckRollDie();
+        // Whenever both down and upbeat trigger, recheck if another trigger is necessary
+        do {
+            triggered = 0;
             
-            // Play sfx
-            if (isCounter) hatSource.Play();
-            else kickSource.Play();
-            
-            // Raise corresponding event
-            if (isCounter) counterbeatTrigger.Invoke();
-            else beatTrigger.Invoke();
+            // Check if reached next downbeat time
+            if (SongPositionBeats >= nextDownbeat) {
+                // Advance downbeat
+                nextDownbeat += beatsPerCycle;
 
-            // Switch mode
-            isCounter = !isCounter;
+                Downbeat();
 
-            // How much time has already passed in this cycle
-            float elapsedTime = DateTime.Now.Second - beatStart;
+                triggered++;
+            }
 
-            yield return new WaitForSeconds(loopTime - elapsedTime);
-        }
+            // Check if reached next upbeat time
+            if (SongPositionBeats >= nextUpbeat) {
+                // Advance upbeat
+                nextUpbeat += beatsPerCycle;
+
+                Upbeat();
+
+                triggered++;
+            }
+        } while (triggered == 2);
+    }
+
+    void Downbeat() {
+        // First, let the die know
+        theDie.CheckRollDie();
+
+        kickSource.Play();
+        DownbeatTrigger.Invoke();
+    }
+
+    void Upbeat() {
+        hatSource.Play();
+        UpbeatTrigger.Invoke();
     }
 }

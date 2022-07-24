@@ -398,11 +398,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1840589020 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 222776471, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
-  m_PrefabInstance: {fileID: 577392664522136046}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1929424922 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7985303404887845683, guid: a09a636d143244b4d931e243d3b835df, type: 3}
@@ -415,34 +410,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 222776471, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 222776473, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
-      propertyPath: m_Pitch
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 222776473, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 222776473, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
-      propertyPath: m_PlayOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 577392663732002438, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
-      propertyPath: songObject
-      value: 
-      objectReference: {fileID: 1840589020}
-    - target: {fileID: 577392663732002438, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
-      propertyPath: beatsPerMinute
-      value: 302.8391
-      objectReference: {fileID: 0}
-    - target: {fileID: 577392663732002438, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
-      propertyPath: secondsPerBeat
-      value: 1.5
-      objectReference: {fileID: 0}
     - target: {fileID: 577392664277550881, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
       propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

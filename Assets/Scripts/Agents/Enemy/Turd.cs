@@ -28,11 +28,11 @@ public class Turd : MonoBehaviour
 
         EnsureNotNull.Objects(rhythmicExecuter, collider2d, turdExplosion, spriteRenderer, rigidbody2d);
 
-        rhythmicExecuter.OnEveryBeat.AddListener(CountBeat);
+        rhythmicExecuter.OnEveryUpbeat.AddListener(CountBeat);
     }
 
     private void OnDestroy() {
-        rhythmicExecuter?.OnEveryBeat?.RemoveListener(CountBeat);
+        rhythmicExecuter?.OnEveryUpbeat?.RemoveListener(CountBeat);
     }
 
     void CountBeat() {

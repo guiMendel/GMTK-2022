@@ -12,22 +12,22 @@ public class RhythmicExecuter : MonoBehaviour
     public Vector3 snapOffset;
 
     // Triggered when no beat action is available on beat
-    public UnityEvent OnIdleBeat;
+    public UnityEvent OnIdleDownbeat;
 
-    // Triggered when no counterbeat action is available on counterbeat
-    public UnityEvent OnIdleCounterbeat;
+    // Triggered when no upbeat action is available on upbeat
+    public UnityEvent OnIdleUpbeat;
 
-    public UnityEvent OnEveryBeat;
+    public UnityEvent OnEveryDownbeat;
 
-    public UnityEvent OnEveryCounterbeat;
+    public UnityEvent OnEveryUpbeat;
     
     // === STATE
 
     // Action to execute on next beat
-    Dictionary<string, UnityAction> beatActions;
+    Dictionary<string, UnityAction> downbeatActions;
 
-    // Action to execute on next counterbeat
-    Dictionary<string, UnityAction> counterbeatActions;
+    // Action to execute on next upbeat
+    Dictionary<string, UnityAction> upbeatActions;
 
     // === REFS
 
@@ -35,13 +35,13 @@ public class RhythmicExecuter : MonoBehaviour
     Beat beat;
 
     public void Start() {
-        OnIdleBeat ??= new UnityEvent();
-        OnIdleCounterbeat ??= new UnityEvent();
-        OnEveryBeat ??= new UnityEvent();
-        OnEveryCounterbeat ??= new UnityEvent();
+        OnIdleDownbeat ??= new UnityEvent();
+        OnIdleUpbeat ??= new UnityEvent();
+        OnEveryDownbeat ??= new UnityEvent();
+        OnEveryUpbeat ??= new UnityEvent();
         
-        beatActions = new Dictionary<string, UnityAction>();
-        counterbeatActions = new Dictionary<string, UnityAction>();
+        downbeatActions = new Dictionary<string, UnityAction>();
+        upbeatActions = new Dictionary<string, UnityAction>();
         
         grid = FindObjectOfType<Grid>();
         beat = FindObjectOfType<Beat>();
@@ -52,53 +52,55 @@ public class RhythmicExecuter : MonoBehaviour
         SnapToGrid();
 
         // Subscribe to beats
-        beat.beatTrigger.AddListener(BeatListener);
-        beat.counterbeatTrigger.AddListener(CounterbeatListener);
+        beat.DownbeatTrigger.AddListener(DownbeatListener);
+        beat.UpbeatTrigger.AddListener(UpbeatListener);
     }
 
     public void OnDestroy() {
         // Clean listeners up
-        beat.beatTrigger.RemoveListener(BeatListener);
-        beat.counterbeatTrigger.RemoveListener(CounterbeatListener);
+        beat.DownbeatTrigger.RemoveListener(DownbeatListener);
+        beat.UpbeatTrigger.RemoveListener(UpbeatListener);
     }
 
-    public void AddBeatAction(string key, UnityAction newAction) {
-        beatActions[key] = newAction;
-    }
-
-
-    public void AddCounterbeatAction(string key, UnityAction newAction) {
-        counterbeatActions[key] = newAction;
-    }
-
-    public UnityAction GetBeatAction(string key) {
-        return beatActions.ContainsKey(key) ? beatActions[key] : null;
+    public void AddDownbeatAction(string key, UnityAction newAction) {
+        downbeatActions[key] = newAction;
     }
 
 
-    public UnityAction GetCounterbeatAction(string key) {
-        return counterbeatActions.ContainsKey(key) ? counterbeatActions[key] : null;
+    public void AddUpbeatAction(string key, UnityAction newAction) {
+        upbeatActions[key] = newAction;
     }
 
-    public void ClearBeatActions() {
-        beatActions.Clear();
+    public UnityAction GetDownbeatAction(string key) {
+        return downbeatActions.ContainsKey(key) ? downbeatActions[key] : null;
     }
 
-    public void ClearCounterbeatActions() {
-        counterbeatActions.Clear();
+
+    public UnityAction GetUpbeatAction(string key) {
+        return upbeatActions.ContainsKey(key) ? upbeatActions[key] : null;
+    }
+
+    public void ClearDownbeatActions() {
+        downbeatActions.Clear();
+    }
+
+    public void ClearUpbeatActions() {
+        upbeatActions.Clear();
     }
 
     public void ClearAll() {
-        ClearBeatActions();
-        ClearCounterbeatActions();
+        ClearDownbeatActions();
+        ClearUpbeatActions();
     }
 
-    void BeatListener() {
-        PerformActions(beatActions, OnEveryBeat, OnIdleBeat);
+    void DownbeatListener() {
+        PerformActions(downbeatActions, OnEveryDownbeat, OnIdleDownbeat);
     }
 
-    void CounterbeatListener() {
-        PerformActions(counterbeatActions, OnEveryCounterbeat, OnIdleCounterbeat);
+    void UpbeatListener() {
+        print("upbeat!");
+        
+        PerformActions(upbeatActions, OnEveryUpbeat, OnIdleUpbeat);
     }
 
     // Performs the current beat action

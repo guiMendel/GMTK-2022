@@ -14,8 +14,8 @@ public class PlayerAnimation : AnimationManager
 
     // === STATE
 
-    // How many seconds after counterbeat to start jump animation
-    float jumpStartTimeAfterCounterbeat;
+    // How many seconds after downbeat to start jump animation
+    float jumpStartTimeAfterDownbeat;
 
     bool wasAirborne = false;
 
@@ -34,8 +34,8 @@ public class PlayerAnimation : AnimationManager
 
         GetJumpTime();
         
-        // On counterbeat, prepare to start jump animation
-        rhythmicExecuter.OnEveryCounterbeat.AddListener(CountJumpStart);
+        // On downbeat, prepare to start jump animation
+        rhythmicExecuter.OnEveryDownbeat.AddListener(CountJumpStart);
 
         // Subscribe to death
         health.OnDeath.AddListener(SetDie);
@@ -48,7 +48,7 @@ public class PlayerAnimation : AnimationManager
     }
 
     private void OnDestroy() {
-        rhythmicExecuter?.OnEveryCounterbeat?.RemoveListener(CountJumpStart);
+        rhythmicExecuter?.OnEveryDownbeat?.RemoveListener(CountJumpStart);
         health?.OnDeath?.RemoveListener(SetDie);
     }
 
@@ -83,7 +83,7 @@ public class PlayerAnimation : AnimationManager
 
     IEnumerator JumpStartAfterDelay() {
         // Wait until correct time
-        yield return new WaitForSeconds(jumpStartTimeAfterCounterbeat);
+        yield return new WaitForSeconds(jumpStartTimeAfterDownbeat);
 
         // Stop if not grounded
         if (movement.IsGrounded == false) yield break;
@@ -105,10 +105,10 @@ public class PlayerAnimation : AnimationManager
         float jumpAnticipationDuration = jumpDuration * 6/7;
 
         // Calculate the time
-        jumpStartTimeAfterCounterbeat = halfBeat - jumpAnticipationDuration;
+        jumpStartTimeAfterDownbeat = halfBeat - jumpAnticipationDuration;
 
         if (jumpAnticipationDuration < 0) {
-            throw new Exception("Player jump anticipation starts before the counterbeat");
+            throw new Exception("Player jump anticipation starts before the downbeat");
         }
     }
 

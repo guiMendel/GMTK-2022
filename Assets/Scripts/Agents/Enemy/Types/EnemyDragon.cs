@@ -29,8 +29,8 @@ public class EnemyDragon : EnemyType
         // Activate firebox in a while
         StartCoroutine(DelayedFirebox());
 
-        // Stop on counterbeat
-        rhythmicExecuter.AddCounterbeatAction("ceaseFire", () => {
+        // Stop on downbeat
+        rhythmicExecuter.AddDownbeatAction("ceaseFire", () => {
             fireBreath.Stop();
             fireBox.enabled = false;        
         });

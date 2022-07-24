@@ -52,11 +52,11 @@ public class Movement : MonoBehaviour
         tileSize = grid.cellSize.x;
         moveTime = beat.SecondsPerCycle / 2.0f;
 
-        // Cancel horizontal movement on counterbeat
-        rhythmicExecuter.OnEveryCounterbeat.AddListener(StopMovement);
+        // Cancel horizontal movement on downbeat
+        rhythmicExecuter.OnEveryDownbeat.AddListener(StopMovement);
 
         // Hop when idle
-        rhythmicExecuter.OnIdleBeat.AddListener(Hop);
+        rhythmicExecuter.OnIdleUpbeat.AddListener(Hop);
 
         // Init direction
         Direction = 1f;
@@ -64,7 +64,7 @@ public class Movement : MonoBehaviour
 
     private void OnDestroy() {
         // Clean up listener
-        rhythmicExecuter?.OnEveryCounterbeat.RemoveListener(StopMovement);
+        rhythmicExecuter?.OnEveryDownbeat.RemoveListener(StopMovement);
 
     }
 
@@ -160,7 +160,7 @@ public class Movement : MonoBehaviour
     void Hop() {
         // Stop if not grounded or has jump
         if (
-            IsGrounded == false || rhythmicExecuter.GetBeatAction("jump") != null
+            IsGrounded == false || rhythmicExecuter.GetUpbeatAction("jump") != null
         ) return;
         
         ReduceGravity();
@@ -180,8 +180,8 @@ public class Movement : MonoBehaviour
     public void ReduceGravity() {
         rigidBody.gravityScale = hopGravityReduction;
 
-        // Return to normal on counterbeat
-        rhythmicExecuter.AddCounterbeatAction(
+        // Return to normal on downbeat
+        rhythmicExecuter.AddDownbeatAction(
             "returnGravityScale", () => rigidBody.gravityScale = 1f
         );
     }

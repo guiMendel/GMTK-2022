@@ -14,8 +14,8 @@ public class DashSkill : Skill
     
     protected override void OnStart() {}
 
-    protected override void CounterbeatAction() {
-        rhythmicExecuter.AddBeatAction("dash", () => {
+    protected override void DownbeatAction() {
+        rhythmicExecuter.AddUpbeatAction("dash", () => {
             sfx.Play();
             movement.MakeMove(movement.Direction, tiles, hop: false)();
             dashTrail.Play();

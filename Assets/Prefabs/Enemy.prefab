@@ -270,16 +270,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableSnap: 0
   snapOffset: {x: 0, y: 0, z: 0}
-  OnIdleBeat:
+  OnIdleDownbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnIdleCounterbeat:
+  OnIdleUpbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnEveryBeat:
+  OnEveryDownbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnEveryCounterbeat:
+  OnEveryUpbeat:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &4518461273083242448
@@ -474,8 +474,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72fc0533d8bbc44b78ec0fd09f1e47f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  counterbeatFrame: {fileID: -1642995381, guid: 328049535728c4bdb8777d05024f82fa, type: 3}
-  beatFrame: {fileID: -567559736, guid: 328049535728c4bdb8777d05024f82fa, type: 3}
+  downbeatFrame: {fileID: -1642995381, guid: 328049535728c4bdb8777d05024f82fa, type: 3}
+  upbeatFrame: {fileID: -567559736, guid: 328049535728c4bdb8777d05024f82fa, type: 3}
 --- !u!114 &4518461273397167574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,16 +490,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableSnap: 1
   snapOffset: {x: 0, y: 0, z: 0}
-  OnIdleBeat:
+  OnIdleDownbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnIdleCounterbeat:
+  OnIdleUpbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnEveryBeat:
+  OnEveryDownbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnEveryCounterbeat:
+  OnEveryUpbeat:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &4518461273449226100
@@ -600,8 +600,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72fc0533d8bbc44b78ec0fd09f1e47f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  counterbeatFrame: {fileID: 1810591860, guid: ea35ee3247be243d3898d74b1391caa1, type: 3}
-  beatFrame: {fileID: 764732585, guid: ea35ee3247be243d3898d74b1391caa1, type: 3}
+  downbeatFrame: {fileID: 1810591860, guid: ea35ee3247be243d3898d74b1391caa1, type: 3}
+  upbeatFrame: {fileID: 764732585, guid: ea35ee3247be243d3898d74b1391caa1, type: 3}
 --- !u!114 &4518461273449226103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -616,16 +616,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableSnap: 1
   snapOffset: {x: 0, y: 0, z: 0}
-  OnIdleBeat:
+  OnIdleDownbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnIdleCounterbeat:
+  OnIdleUpbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnEveryBeat:
+  OnEveryDownbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnEveryCounterbeat:
+  OnEveryUpbeat:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &4518461273568134614
@@ -819,8 +819,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72fc0533d8bbc44b78ec0fd09f1e47f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  counterbeatFrame: {fileID: -1522981317, guid: 29985df703c6e430b86499d7e28aa17f, type: 3}
-  beatFrame: {fileID: 988821179, guid: 29985df703c6e430b86499d7e28aa17f, type: 3}
+  downbeatFrame: {fileID: -1522981317, guid: 29985df703c6e430b86499d7e28aa17f, type: 3}
+  upbeatFrame: {fileID: 988821179, guid: 29985df703c6e430b86499d7e28aa17f, type: 3}
 --- !u!114 &4518461274608738395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -835,16 +835,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableSnap: 1
   snapOffset: {x: 0, y: 0, z: 0}
-  OnIdleBeat:
+  OnIdleDownbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnIdleCounterbeat:
+  OnIdleUpbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnEveryBeat:
+  OnEveryDownbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnEveryCounterbeat:
+  OnEveryUpbeat:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &4518461274901180449
@@ -945,8 +945,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72fc0533d8bbc44b78ec0fd09f1e47f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  counterbeatFrame: {fileID: 1830225143, guid: 59eae3ae9edc4437581ab36dac488218, type: 3}
-  beatFrame: {fileID: -825920795, guid: 59eae3ae9edc4437581ab36dac488218, type: 3}
+  downbeatFrame: {fileID: 1830225143, guid: 59eae3ae9edc4437581ab36dac488218, type: 3}
+  upbeatFrame: {fileID: -825920795, guid: 59eae3ae9edc4437581ab36dac488218, type: 3}
 --- !u!114 &4518461274901180452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -961,16 +961,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableSnap: 1
   snapOffset: {x: 0, y: 0, z: 0}
-  OnIdleBeat:
+  OnIdleDownbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnIdleCounterbeat:
+  OnIdleUpbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnEveryBeat:
+  OnEveryDownbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnEveryCounterbeat:
+  OnEveryUpbeat:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6441741187490709381

@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
     Health health;
     SpriteRenderer spriteRenderer;
 
-    public void Start() {
+    private void Awake() {
         rhythmicExecuter = GetComponent<RhythmicExecuter>();
         movement = GetComponent<Movement>();
         collider2d = GetComponent<Collider2D>();
@@ -46,17 +46,19 @@ public class PlayerController : MonoBehaviour
         EnsureNotNull.Objects(rhythmicExecuter, movement, collider2d, grid, tilemap, body, health, spriteRenderer);
 
         OnRespawn ??= new UnityEvent();
+    }
 
+    public void Start() {
         startingPosition = transform.position;
 
         health.OnDeath.AddListener(Die);
 
-        rhythmicExecuter.OnEveryCounterbeat.AddListener(AddMoveIfHolding);
+        rhythmicExecuter.OnEveryDownbeat.AddListener(AddMoveIfHolding);
     }
 
     private void OnDestroy() {
         health.OnDeath.RemoveListener(Die);
-        rhythmicExecuter.OnEveryCounterbeat.RemoveListener(AddMoveIfHolding);
+        rhythmicExecuter.OnEveryDownbeat.RemoveListener(AddMoveIfHolding);
     }
     
     public void Jump(InputAction.CallbackContext callbackContext)
@@ -64,12 +66,12 @@ public class PlayerController : MonoBehaviour
         if (!callbackContext.performed || !callbackContext.ReadValueAsButton()) return;
 
         // Add jump action
-        rhythmicExecuter.AddBeatAction("jump", movement.MakeJump());
+        rhythmicExecuter.AddUpbeatAction("jump", movement.MakeJump());
 
         // If already had a move action, double it's speed
-        if (rhythmicExecuter.GetBeatAction("move") == null) return;
+        if (rhythmicExecuter.GetUpbeatAction("move") == null) return;
 
-        rhythmicExecuter.AddBeatAction(
+        rhythmicExecuter.AddUpbeatAction(
             "move", movement.MakeMove(movement.Direction, 2, jumpMoveDelay)
         );
     }
@@ -86,9 +88,9 @@ public class PlayerController : MonoBehaviour
 
     void Move(float direction) {
         // If has a jump action, move double the distance
-        int tiles = rhythmicExecuter.GetBeatAction("jump") != null ? 2 : 1;
+        int tiles = rhythmicExecuter.GetUpbeatAction("jump") != null ? 2 : 1;
         
-        rhythmicExecuter.AddBeatAction(
+        rhythmicExecuter.AddUpbeatAction(
             "move", movement.MakeMove(direction, tiles, jumpMoveDelay)
         );
     }
@@ -115,7 +117,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(resetDelay);
 
         // Respawn on beat
-        rhythmicExecuter.AddBeatAction("respawn", Respawn);
+        rhythmicExecuter.AddUpbeatAction("respawn", Respawn);
     }
 
     void Respawn() {

@@ -31,7 +31,7 @@ abstract public class Skill : MonoBehaviour
 
     protected abstract void OnStart();
     protected virtual void BeatAction() {}
-    protected virtual void CounterbeatAction() {}
+    protected virtual void DownbeatAction() {}
     protected virtual void OnActivate() {}
     protected virtual void OnDeactivate() {}
 
@@ -46,12 +46,12 @@ abstract public class Skill : MonoBehaviour
 
         theDie.OnDieRoll.AddListener(WatchDieRoll);
 
-        rhythmicExecuter.OnEveryBeat.AddListener(() => {
+        rhythmicExecuter.OnEveryUpbeat.AddListener(() => {
             if (IsActive) BeatAction();
         });
 
-        rhythmicExecuter.OnEveryCounterbeat.AddListener(() => {
-            if (IsActive) CounterbeatAction();
+        rhythmicExecuter.OnEveryDownbeat.AddListener(() => {
+            if (IsActive) DownbeatAction();
         });
 
         OnStart();

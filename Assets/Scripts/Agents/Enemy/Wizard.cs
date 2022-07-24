@@ -43,16 +43,16 @@ public class Wizard : MonoBehaviour
     }
 
     private void OnDestroy() {
-        rhythmicExecuter.OnEveryBeat.RemoveListener(FollowPlayer);
-        rhythmicExecuter.OnEveryCounterbeat.RemoveListener(StopMoving);
+        rhythmicExecuter.OnEveryUpbeat.RemoveListener(FollowPlayer);
+        rhythmicExecuter.OnEveryDownbeat.RemoveListener(StopMoving);
         playerController.OnRespawn.RemoveListener(ResetPosition);
     }
 
     public void BeginAction() {
         active = true;
         
-        rhythmicExecuter.OnEveryBeat.AddListener(FollowPlayer);
-        rhythmicExecuter.OnEveryCounterbeat.AddListener(StopMoving);
+        rhythmicExecuter.OnEveryUpbeat.AddListener(FollowPlayer);
+        rhythmicExecuter.OnEveryDownbeat.AddListener(StopMoving);
     }
 
     void FollowPlayer() {
@@ -98,6 +98,6 @@ public class Wizard : MonoBehaviour
         rigidBody.velocity = Vector2.zero;
         freezePosition = true;
         
-        rhythmicExecuter.AddCounterbeatAction("restartMovement", () => freezePosition = false);
+        rhythmicExecuter.AddDownbeatAction("restartMovement", () => freezePosition = false);
     }
 }

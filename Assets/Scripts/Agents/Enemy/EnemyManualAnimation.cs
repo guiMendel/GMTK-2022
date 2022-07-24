@@ -6,8 +6,8 @@ public class EnemyManualAnimation : MonoBehaviour
 {
     // === INTERFACE
     
-    public Sprite counterbeatFrame;
-    public Sprite beatFrame;
+    public Sprite downbeatFrame;
+    public Sprite upbeatFrame;
 
 
     // === REFS
@@ -21,20 +21,20 @@ public class EnemyManualAnimation : MonoBehaviour
 
         EnsureNotNull.Objects(rhythmicExecuter, spriteRenderer);
 
-        rhythmicExecuter.OnEveryBeat.AddListener(SetBeatFrame);
-        rhythmicExecuter.OnEveryCounterbeat.AddListener(SetCounterbeatFrame);
+        rhythmicExecuter.OnEveryUpbeat.AddListener(SetBeatFrame);
+        rhythmicExecuter.OnEveryDownbeat.AddListener(SetDownbeatFrame);
     }
 
     private void OnDestroy() {
-        rhythmicExecuter.OnEveryBeat.RemoveListener(SetBeatFrame);
-        rhythmicExecuter.OnEveryCounterbeat.RemoveListener(SetCounterbeatFrame);
+        rhythmicExecuter.OnEveryUpbeat.RemoveListener(SetBeatFrame);
+        rhythmicExecuter.OnEveryDownbeat.RemoveListener(SetDownbeatFrame);
     }
 
     void SetBeatFrame() {
-        spriteRenderer.sprite = beatFrame;
+        spriteRenderer.sprite = upbeatFrame;
     }
 
-    void SetCounterbeatFrame() {
-        spriteRenderer.sprite = counterbeatFrame;
+    void SetDownbeatFrame() {
+        spriteRenderer.sprite = downbeatFrame;
     }
 }

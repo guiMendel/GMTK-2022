@@ -38,8 +38,8 @@ public class MovingPlatform : MonoBehaviour
         EnsureNotNull.Objects(rhythmicExecuter, grid, rigidBody);
 
         // Set default beat action to follow waypoint
-        rhythmicExecuter.OnEveryBeat.AddListener(MoveToWaypoint);
-        rhythmicExecuter.OnEveryCounterbeat.AddListener(StopMoving);
+        rhythmicExecuter.OnEveryUpbeat.AddListener(MoveToWaypoint);
+        rhythmicExecuter.OnEveryDownbeat.AddListener(StopMoving);
 
         Beat beat = FindObjectOfType<Beat>();
 
@@ -48,8 +48,8 @@ public class MovingPlatform : MonoBehaviour
 
     private void OnDestroy() {
         // Clean up listeners
-        rhythmicExecuter?.OnEveryBeat?.RemoveListener(MoveToWaypoint);
-        rhythmicExecuter?.OnEveryCounterbeat?.RemoveListener(StopMoving);
+        rhythmicExecuter?.OnEveryUpbeat?.RemoveListener(MoveToWaypoint);
+        rhythmicExecuter?.OnEveryDownbeat?.RemoveListener(StopMoving);
     }
 
     void MoveToWaypoint() {

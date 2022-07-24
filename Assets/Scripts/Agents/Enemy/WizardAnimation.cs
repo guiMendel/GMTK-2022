@@ -13,8 +13,8 @@ public class WizardAnimation : AnimationManager
 
     // === STATE
 
-    // How many seconds after counterbeat to start impulse animation
-    float impulseStartTimeAfterCounterbeat;
+    // How many seconds after downbeat to start impulse animation
+    float impulseStartTimeAfterDownbeat;
 
     // === REFS
 
@@ -27,9 +27,9 @@ public class WizardAnimation : AnimationManager
 
         EnsureNotNull.Objects(rhythmicExecuter);
 
-        rhythmicExecuter.OnEveryCounterbeat.AddListener(SetSwim);
+        rhythmicExecuter.OnEveryDownbeat.AddListener(SetSwim);
 
-        rhythmicExecuter.OnEveryBeat.AddListener(SetImpulse);
+        rhythmicExecuter.OnEveryUpbeat.AddListener(SetImpulse);
 
         wizard.OnReset.AddListener(SetSpawn);
     }
@@ -39,8 +39,8 @@ public class WizardAnimation : AnimationManager
     }
 
     private void OnDestroy() {
-        rhythmicExecuter?.OnEveryCounterbeat?.RemoveListener(SetSwim);
-        rhythmicExecuter?.OnEveryBeat?.RemoveListener(SetImpulse);
+        rhythmicExecuter?.OnEveryDownbeat?.RemoveListener(SetSwim);
+        rhythmicExecuter?.OnEveryUpbeat?.RemoveListener(SetImpulse);
         wizard?.OnReset?.RemoveListener(SetSpawn);
     }
 

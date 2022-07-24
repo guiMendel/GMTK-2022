@@ -52,15 +52,15 @@ abstract public class EnemyType : MonoBehaviour
 
         EnsureNotNull.Objects(UniverseMapper, rhythmicExecuter, movement, enemyFreezer);
 
-        // Every counterbeat, prepare for this beat's action
-        rhythmicExecuter.OnEveryCounterbeat.AddListener(ActionPrepare);
+        // Every downbeat, prepare for this beat's action
+        rhythmicExecuter.OnEveryDownbeat.AddListener(ActionPrepare);
 
         OnStart();
     }
 
     private void OnDestroy() {
         // Clean up
-        rhythmicExecuter?.OnEveryCounterbeat?.RemoveListener(ActionPrepare);
+        rhythmicExecuter?.OnEveryDownbeat?.RemoveListener(ActionPrepare);
     }
 
     void ActionPrepare() {
@@ -80,6 +80,6 @@ abstract public class EnemyType : MonoBehaviour
         // print(FindObjectOfType<TheDie>().Value + ": " + this.GetType().Name);
 
         // Set up a beat action
-        rhythmicExecuter.AddBeatAction("enemyAction", BeatActionWrapper);
+        rhythmicExecuter.AddUpbeatAction("enemyAction", BeatActionWrapper);
     }
 }

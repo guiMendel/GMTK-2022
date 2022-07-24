@@ -5,4 +5,5 @@ using UnityEngine;
 public class UniverseOldWest : UniverseType
 {
     protected override void OnStart() {}
+    protected override void OnAwake() {}
 }
