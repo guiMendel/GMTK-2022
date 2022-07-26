@@ -98,8 +98,6 @@ public class RhythmicExecuter : MonoBehaviour
     }
 
     void UpbeatListener() {
-        print("upbeat!");
-        
         PerformActions(upbeatActions, OnEveryUpbeat, OnIdleUpbeat);
     }
 
