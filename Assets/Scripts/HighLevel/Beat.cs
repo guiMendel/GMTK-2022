@@ -12,6 +12,9 @@ public class Beat : MonoBehaviour
     // BPM of the song
     [Min(1f)] public float beatsPerMinute = 120f;
 
+    // Reference of BPM at which the timescale should be 1
+    public float referenceBpm = 120f;
+
     // How many beats in a downbeat cycle
     public float beatsPerCycle = 8f;
 
@@ -83,6 +86,8 @@ public class Beat : MonoBehaviour
         // Init fields
         nextDownbeat = beatsPerCycle;
         nextUpbeat = beatsPerCycle / 2f;
+
+        SetTimescale();
     }
 
     private void Update() {
@@ -126,5 +131,10 @@ public class Beat : MonoBehaviour
     void Upbeat() {
         hatSource.Play();
         UpbeatTrigger.Invoke();
+    }
+
+    // Sets the timescale relative to the song's bpm
+    void SetTimescale() {
+        Time.timeScale = beatsPerMinute / referenceBpm;
     }
 }
