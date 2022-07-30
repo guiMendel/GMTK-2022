@@ -42,7 +42,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d01576bf39ed646ca939ea79a4c88651, type: 3}
+  m_audioClip: {fileID: 8300000, guid: d613c82a2c9e72e4dafd6ea3ad1a0851, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -175,11 +175,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 361ff365a13cf4a9b894950fcaf75e62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beatsPerMinute: 302.8391
-  beatTrigger:
+  beatsPerMinute: 120
+  beatsPerCycle: 4
+  beatCountStartDelay: 0.75
+  DownbeatTrigger:
     m_PersistentCalls:
       m_Calls: []
-  counterbeatTrigger:
+  UpbeatTrigger:
     m_PersistentCalls:
       m_Calls: []
   kickObject: {fileID: 577392664225079375}
@@ -674,16 +676,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   disableSnap: 1
   snapOffset: {x: 0, y: 0, z: 0}
-  OnIdleBeat:
+  OnIdleDownbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnIdleCounterbeat:
+  OnIdleUpbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnEveryBeat:
+  OnEveryDownbeat:
     m_PersistentCalls:
       m_Calls: []
-  OnEveryCounterbeat:
+  OnEveryUpbeat:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &577392664393413672

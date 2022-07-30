@@ -410,10 +410,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 577392663732002438, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
-      propertyPath: beatsPerMinute
-      value: 302
-      objectReference: {fileID: 0}
     - target: {fileID: 577392664277550881, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
       propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
