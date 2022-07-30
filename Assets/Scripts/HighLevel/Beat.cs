@@ -74,6 +74,8 @@ public class Beat : MonoBehaviour
     UpbeatTrigger ??= new UnityEvent();
 
     EnsureNotNull.Objects(kickSource, hatSource, theDie);
+
+    SetTimescale();
   }
 
   private void Start()
@@ -87,8 +89,6 @@ public class Beat : MonoBehaviour
     // Init fields
     nextDownbeat = beatCountStartDelay;
     nextUpbeat = beatsPerCycle / 2f + beatCountStartDelay;
-
-    SetTimescale();
   }
 
   private void Update()

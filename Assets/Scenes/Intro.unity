@@ -410,9 +410,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 222776473, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: ad0973414dcbf1447bf2ddf46dde64e8, type: 3}
     - target: {fileID: 577392663732002438, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
       propertyPath: beatsPerCycle
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 577392663732002438, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
+      propertyPath: beatsPerMinute
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 577392664225079373, guid: 68fdaaaeea2aa4beb87b62899fe66189, type: 3}
       propertyPath: m_Enabled
