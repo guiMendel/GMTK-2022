@@ -88,14 +88,7 @@ public class Beat : MonoBehaviour
     nextDownbeat = beatCountStartDelay;
     nextUpbeat = beatsPerCycle / 2f + beatCountStartDelay;
 
-    AdjustGravity();
     SetTimescale();
-  }
-
-  // Set the gravity according to the bpm
-  private void AdjustGravity()
-  {
-    Physics2D.gravity = Vector2.down * (beatsPerMinute / 3);
   }
 
   private void Update()

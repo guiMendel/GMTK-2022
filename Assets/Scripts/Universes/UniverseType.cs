@@ -5,100 +5,112 @@ using UnityEngine.Tilemaps;
 
 abstract public class UniverseType : MonoBehaviour
 {
-    // === INTERFACE
-    
-    public List<GameObject> synchronizeObjects;
+  // === INTERFACE
 
-    public Color universeColor;
+  public List<GameObject> synchronizeObjects;
 
-
-    // === REFS
-
-    UniverseMapper UniverseMapper;
-    TheDie theDie;
-    RhythmicExecuter rhythmicExecuter;
-    Tilemap tilemap;
+  public Color universeColor;
 
 
-    // === PROPERTIES
+  // === REFS
 
-    public int DieValue => UniverseMapper.InverseType[this.GetType().ToString()];
-    public bool IsActive => UniverseMapper.CurrentUniverse == this;
-
-
-    // === OVERRIDABLES
-
-    protected abstract void OnStart();
-    protected abstract void OnAwake();
-    protected virtual void BeatAction() {}
-    protected virtual void DownbeatAction() {}
-    protected virtual void OnActivate() {}
+  UniverseMapper UniverseMapper;
+  TheDie theDie;
+  RhythmicExecuter rhythmicExecuter;
+  Tilemap tilemap;
 
 
-    private void Awake() {
-        synchronizeObjects ??= new List<GameObject>();
-        UniverseMapper = FindObjectOfType<UniverseMapper>();
-        theDie = FindObjectOfType<TheDie>();
-        rhythmicExecuter = GetComponent<RhythmicExecuter>();
-        tilemap = FindObjectOfType<Tilemap>();
+  // === PROPERTIES
 
-        EnsureNotNull.Objects(UniverseMapper, theDie, rhythmicExecuter, tilemap);
+  public int DieValue => UniverseMapper.InverseType[this.GetType().ToString()];
+  public bool IsActive => UniverseMapper.CurrentUniverse == this;
 
-        OnAwake();
+
+  // === OVERRIDABLES
+
+  protected abstract void OnStart();
+  protected abstract void OnAwake();
+  protected virtual void BeatAction() { }
+  protected virtual void DownbeatAction() { }
+  protected virtual void OnActivate() { }
+
+
+  private void Awake()
+  {
+    synchronizeObjects ??= new List<GameObject>();
+    UniverseMapper = FindObjectOfType<UniverseMapper>();
+    theDie = FindObjectOfType<TheDie>();
+    rhythmicExecuter = GetComponent<RhythmicExecuter>();
+    tilemap = FindObjectOfType<Tilemap>();
+
+    EnsureNotNull.Objects(UniverseMapper, theDie, rhythmicExecuter, tilemap);
+
+    OnAwake();
+  }
+
+  private void Start()
+  {
+    SetSynchronizedObjects(IsActive);
+
+    theDie.OnDieRoll.AddListener(WatchDieRoll);
+
+    rhythmicExecuter.OnEveryUpbeat.AddListener(() =>
+    {
+      if (IsActive) BeatAction();
+    });
+
+    rhythmicExecuter.OnEveryDownbeat.AddListener(() =>
+    {
+      if (IsActive) DownbeatAction();
+    });
+
+    OnStart();
+  }
+
+  private void OnDestroy()
+  {
+    theDie?.OnDieRoll?.RemoveListener(WatchDieRoll);
+  }
+
+  void WatchDieRoll(int newValue, int oldValue)
+  {
+    // Ignore redundancy
+    if (newValue == oldValue) return;
+
+    // Enable when activated
+    if (newValue == DieValue)
+    {
+      SetSynchronizedObjects(true);
+      OnActivate();
+
+      OnOwnActivate();
     }
 
-    private void Start() {
-        SetSynchronizedObjects(IsActive);
+    // Disable when deactivated
+    else if (oldValue == DieValue) SetSynchronizedObjects(false);
+  }
 
-        theDie.OnDieRoll.AddListener(WatchDieRoll);
-
-        rhythmicExecuter.OnEveryUpbeat.AddListener(() => {
-            if (IsActive) BeatAction();
-        });
-
-        rhythmicExecuter.OnEveryDownbeat.AddListener(() => {
-            if (IsActive) DownbeatAction();
-        });
-
-        OnStart();
+  void SetSynchronizedObjects(bool enabled)
+  {
+    foreach (var synchronizeObject in synchronizeObjects)
+    {
+      synchronizeObject.SetActive(enabled);
     }
+  }
 
-    private void OnDestroy() {
-        theDie?.OnDieRoll?.RemoveListener(WatchDieRoll);
+  // Own OnActivate behavior
+  void OnOwnActivate()
+  {
+    Camera.main.backgroundColor = universeColor;
+    universeColor = new Vector4(universeColor.r, universeColor.g, universeColor.b, 1f);
+    tilemap.color = universeColor;
+
+    foreach (MovingPlatform platform in FindObjectsOfType<MovingPlatform>())
+    {
+      foreach (SpriteRenderer sprite in platform.GetComponentsInChildren<SpriteRenderer>())
+      {
+        sprite.color = universeColor;
+      }
     }
-
-    void WatchDieRoll(int newValue, int oldValue) {
-        // Ignore redundancy
-        if (newValue == oldValue) return;
-        
-        // Enable when activated
-        if (newValue == DieValue) {
-            OnActivate();
-            SetSynchronizedObjects(true);
-
-            OnOwnActivate();
-        }
-
-        // Disable when deactivated
-        else if (oldValue == DieValue) SetSynchronizedObjects(false);
-    }
-
-    void SetSynchronizedObjects(bool enabled) {
-        foreach (var synchronizeObject in synchronizeObjects) {
-            synchronizeObject.SetActive(enabled);
-        }
-    }
-
-    // Own OnActivate behavior
-    void OnOwnActivate() {
-        Camera.main.backgroundColor = universeColor;
-        universeColor = new Vector4(universeColor.r, universeColor.g, universeColor.b, 1f);
-        tilemap.color = universeColor;
-
-        foreach (MovingPlatform platform in FindObjectsOfType<MovingPlatform>()) {
-            foreach (SpriteRenderer sprite in platform.GetComponentsInChildren<SpriteRenderer>()) {
-                sprite.color = universeColor;
-            }
-        }
-    }
+  }
 }
